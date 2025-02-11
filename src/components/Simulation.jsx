@@ -18,7 +18,6 @@ export default function Simulation() {
       <InputBlockAccordion blockTitle="Tavanomainen hoito"></InputBlockAccordion>
       <InputBlockAccordion blockTitle="1. porras: Ohjattu omahoito"></InputBlockAccordion>
       <InputBlockAccordion blockTitle="2. porras: Kognitiivinen lyhytterapia/IPC"></InputBlockAccordion>
-      <ResultsChart></ResultsChart>
     </Container>
   );
 }
