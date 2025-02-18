@@ -11,11 +11,7 @@ export default function InputBlockAccordion(props) {
   return (
     <Accordion>
       <AccordionSummary>{props.blockTitle}</AccordionSummary>
-      <AccordionDetails>
-        <Typography variant="h5" component="h2" align="center">
-          Syötä jonotilanne:
-        </Typography>
-      </AccordionDetails>
+      <AccordionDetails></AccordionDetails>
       <AccordionActions></AccordionActions>
     </Accordion>
   );
