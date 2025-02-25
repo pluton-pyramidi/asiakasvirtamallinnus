@@ -8,6 +8,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@base-ui-components/react": "^1.0.0-alpha.6",
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
     "@fontsource/roboto": "^5.1.1",
