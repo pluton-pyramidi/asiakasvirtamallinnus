@@ -6,38 +6,20 @@ import {
   decrementQueue,
 } from "../features/queueState/queueStateSlice";
 import { Box, Button, Typography, TextField } from "@mui/material";
-import { useState } from "react";
 
 export default function QueueInput() {
   const queueState = useSelector((state) => state.queueState.value);
   const dispatch = useDispatch();
-  const [queueAmount, setQueueAmount] = useState(0);
 
   return (
     <Box>
       <TextField
+        label="Syötä jono"
+        type="number"
         aria-label="Syötä jonossa olevien potilaiden lukumäärä"
-        value={queueAmount}
-        onChange={(e) => setQueueAmount(e.target.value)}
-      >
-        Jonon määrä
-      </TextField>
-      <Button onClick={() => dispatch(setQueue(Number(queueAmount) || 0))}>
-        Syötä jono
-      </Button>
-      <br></br>
-      <Button
-        aria-label="Lisää potilas jonoon"
-        onClick={() => dispatch(incrementQueue())}
-      >
-        +
-      </Button>
-      <Button
-        aria-label="Vähennä potilas jonosta"
-        onClick={() => dispatch(decrementQueue())}
-      >
-        -
-      </Button>
+        value={queueState == 0 ? "" : queueState}
+        onChange={(e) => dispatch(setQueue(Number(e.target.value)))}
+      ></TextField>
       <Typography>{queueState}</Typography>
     </Box>
   );
