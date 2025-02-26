@@ -11,6 +11,8 @@ export default function InputBlock() {
       <IntegerInput
         fieldTitle="Syötä jono"
         fieldAriaLabel="Syötä jonossa olevien potilaiden lukumäärä"
+        stateId="initialQueueState"
+        stateSetterId="setInitialQueueInput"
       ></IntegerInput>
       <IntegerInput
         fieldTitle="Potilaita lisää/kk"

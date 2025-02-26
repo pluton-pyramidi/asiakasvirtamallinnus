@@ -1,10 +1,16 @@
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setInitialQueueInput } from "../app/store";
+import * as AllStates from "../app/store";
 import { Box, Button, Typography, TextField } from "@mui/material";
 
-export default function IntegerInput({ fieldTitle, fieldAriaLabel }) {
-  const queueState = useSelector((state) => state.initialQueueState.value);
+/* IntegerInput needs props from the parent to 1) give the text field labels and 2) the name of state & its reducer to be used by the state reducer factory in store.js. The state and its reducer need to be configured in store.js */
+export default function IntegerInput({
+  fieldTitle,
+  fieldAriaLabel,
+  stateId,
+  stateSetterId,
+}) {
+  const queueState = useSelector((state) => state[stateId]?.value ?? "");
   const dispatch = useDispatch();
 
   return (
@@ -14,7 +20,10 @@ export default function IntegerInput({ fieldTitle, fieldAriaLabel }) {
         type="number"
         aria-label={fieldAriaLabel}
         value={queueState == 0 ? "" : queueState}
-        onChange={(e) => dispatch(setInitialQueueInput(Number(e.target.value)))}
+        onChange={(e) =>
+          AllStates[stateSetterId] &&
+          dispatch(AllStates[stateSetterId](Number(e.target.value)))
+        }
       ></TextField>
       <Typography>{queueState}</Typography>
     </Box>
