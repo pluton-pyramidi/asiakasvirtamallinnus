@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 export default function Model() {
   return (
@@ -14,7 +14,8 @@ export default function Model() {
         bgcolor: "primary.main",
       }}
     >
-      <Button></Button>
+      <Typography>[Mallipuu tähän]</Typography>
+      <Button>Nappi jolla valita porras</Button>
     </Box>
   );
 }
