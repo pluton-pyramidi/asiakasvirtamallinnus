@@ -1,24 +1,20 @@
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setQueue,
-  incrementQueue,
-  decrementQueue,
-} from "../features/queueState/queueStateSlice";
+import { setInitialQueueInput } from "../app/store";
 import { Box, Button, Typography, TextField } from "@mui/material";
 
-export default function QueueInput() {
-  const queueState = useSelector((state) => state.queueState.value);
+export default function IntegerInput({ fieldTitle, fieldAriaLabel }) {
+  const queueState = useSelector((state) => state.initialQueueState.value);
   const dispatch = useDispatch();
 
   return (
     <Box>
       <TextField
-        label="Syötä jono"
+        label={fieldTitle}
         type="number"
-        aria-label="Syötä jonossa olevien potilaiden lukumäärä"
+        aria-label={fieldAriaLabel}
         value={queueState == 0 ? "" : queueState}
-        onChange={(e) => dispatch(setQueue(Number(e.target.value)))}
+        onChange={(e) => dispatch(setInitialQueueInput(Number(e.target.value)))}
       ></TextField>
       <Typography>{queueState}</Typography>
     </Box>
