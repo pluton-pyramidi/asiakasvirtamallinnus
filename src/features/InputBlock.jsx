@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { BoxSx } from "../components/ComponentSx";
-import IntegerInput from "../components/IntegerInput";
+import IntegerInput from "./inputInteger/IntegerInput";
 
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
@@ -12,7 +12,7 @@ export default function InputBlock() {
     <Box sx={BoxSx}>
       <Typography>Ohjeet tähän</Typography>
       <Box>
-        {currentView === "view1" && (
+        {currentView === "alkutilanne" && (
           <Box>
             Alkutilanne{" "}
             <IntegerInput
@@ -23,7 +23,7 @@ export default function InputBlock() {
             ></IntegerInput>
           </Box>
         )}
-        {currentView === "view2" && (
+        {currentView === "ensijasennys" && (
           <Box>
             Ensijäsennys{" "}
             <IntegerInput
@@ -34,7 +34,7 @@ export default function InputBlock() {
             ></IntegerInput>
           </Box>
         )}
-        {currentView === "view3" && (
+        {currentView === "hoitoonohjaus" && (
           <Box>
             Hoitoonohjaus{" "}
             <IntegerInput
@@ -45,7 +45,7 @@ export default function InputBlock() {
             ></IntegerInput>
           </Box>
         )}
-        {currentView === "view4" && (
+        {currentView === "tau" && (
           <Box>
             TAU{" "}
             <IntegerInput
@@ -56,7 +56,7 @@ export default function InputBlock() {
             ></IntegerInput>
           </Box>
         )}
-        {currentView === "view5" && (
+        {currentView === "p1" && (
           <Box>
             P1{" "}
             <IntegerInput
@@ -67,7 +67,7 @@ export default function InputBlock() {
             ></IntegerInput>
           </Box>
         )}
-        {currentView === "view6" && (
+        {currentView === "p2" && (
           <Box>
             P2{" "}
             <IntegerInput
@@ -78,7 +78,7 @@ export default function InputBlock() {
             ></IntegerInput>
           </Box>
         )}
-        {currentView === "view7" && (
+        {currentView === "muu" && (
           <Box>
             Muu{" "}
             <IntegerInput
