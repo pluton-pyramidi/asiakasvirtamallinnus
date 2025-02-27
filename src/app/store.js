@@ -1,17 +1,22 @@
 import { configureStore } from "@reduxjs/toolkit";
 import counterReducer from "../features/counter/counterSlice";
 import createInputIntegerSlice from "../features/inputState/createInputStateSlice";
+import viewReducer from "../features/inputState/viewSlice";
 
+/* Initialize a new slice, give it a name and an intial value*/
 const initialQueueStateSlice = createInputIntegerSlice("initialQueue", 0);
+/* */
+
 export const {
-  setInput: setInitialQueueInput,
-  incrementInput: incrementInitialQueueInput,
-  decrementInput: decrementInitialQueueInput,
+  setInput: setInitialQueue,
+  incrementInput: incrementInitialQueue,
+  decrementInput: decrementInitialQueue,
 } = initialQueueStateSlice.actions;
 
 export default configureStore({
   reducer: {
     counter: counterReducer,
-    initialQueueState: initialQueueStateSlice.reducer,
+    initialQueue: initialQueueStateSlice.reducer,
+    view: viewReducer,
   },
 });
