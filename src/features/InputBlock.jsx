@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { BoxSx } from "../components/ComponentSx";
-import IntegerInput from "./inputInteger/IntegerInput";
+import IntegerInput from "./inputInteger/InputInteger";
 
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
