@@ -1,15 +1,47 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { NumberField } from "@base-ui-components/react/number-field";
-import styles from "./index.module.css";
+import styles from "../../customStyles/numberField.module.css";
 
-export default function ExampleNumberField() {
-  const id = React.useId();
+export default function ExampleNumberField({ fieldLabel, stateId }) {
+  const inputState = useSelector((state) => state[stateId]?.value ?? "");
+  const dispatch = useDispatch();
+  const [sliceAction, setSliceAction] = useState("");
+
+  useEffect(() => {
+    /* This hook dynamically imports the stateId designated state action */
+    const loadSlice = async () => {
+      try {
+        const module = await import(`./${stateId}Slice.js`);
+        console.log(`Loaded slice for stateId: ${stateId}`, module);
+        setSliceAction(
+          () => module.setInput
+        ); /* Thus far this modular number input field only works with a state setter named "setInput" */
+      } catch (error) {
+        console.error(`Failed to load slice for stateId: ${stateId}`, error);
+      }
+    };
+    loadSlice();
+  }, [stateId]);
+
+  const handleChange = (value) => {
+    if (sliceAction) {
+      console.log(`Dispatching action for stateId: ${stateId} ${sliceAction}`);
+      dispatch(sliceAction(Number(value)));
+    } else {
+      console.log(`No action found for stateId: ${stateId}`);
+    }
+  };
+
   return (
-    <NumberField.Root id={id} defaultValue={100} className={styles.Field}>
+    <NumberField.Root
+      value={inputState}
+      className={styles.Field}
+      onValueChange={handleChange}
+    >
       <NumberField.ScrubArea className={styles.ScrubArea}>
-        <label htmlFor={id} className={styles.Label}>
-          Amount
-        </label>
+        <label className={styles.Label}>{fieldLabel}</label>
         <NumberField.ScrubAreaCursor className={styles.ScrubAreaCursor}>
           <CursorGrowIcon />
         </NumberField.ScrubAreaCursor>
