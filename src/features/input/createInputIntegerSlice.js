@@ -10,12 +10,6 @@ const createInputIntegerSlice = (name, initialValue) => {
       setInput: (state, action) => {
         state.value = action.payload;
       },
-      incrementInput: (state) => {
-        state.value += 1;
-      },
-      decrementInput: (state) => {
-        state.value -= 1;
-      },
     },
   });
 };
