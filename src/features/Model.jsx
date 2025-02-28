@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Button, Typography } from "@mui/material";
-import { BoxSx } from "../components/ComponentSx";
+import { BoxSx } from "../customStyles/ComponentSx";
 import SelectViewButton from "./view/SelectViewButton";
 
 export default function Model() {

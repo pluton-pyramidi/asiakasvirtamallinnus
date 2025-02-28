@@ -2,7 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
-import { BoxSx } from "../components/ComponentSx";
+import { BoxSx } from "../customStyles/ComponentSx";
 import IntegerInput from "./inputInteger/InputInteger";
 
 export default function InputBlock() {
