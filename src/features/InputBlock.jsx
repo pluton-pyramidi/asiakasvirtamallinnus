@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { BoxSx } from "../customStyles/ComponentSx";
 import IntegerInput from "./input/InputInteger";
+import NumberInput from "./input/numberInput";
 
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
@@ -16,75 +17,45 @@ export default function InputBlock() {
           <Box>
             Alkutilanne{" "}
             <IntegerInput
-              fieldTitle="Syötä jono"
+              fieldLabel="Syötä jono"
               stateId="initialQueue"
             ></IntegerInput>
+            <NumberInput
+              fieldLabel="Syötä jono"
+              stateId="initialQueue"
+            ></NumberInput>
           </Box>
         )}
         {currentView === "ensijasennys" && (
           <Box>
             Ensijäsennys{" "}
-            <IntegerInput
-              fieldTitle="asd"
-              fieldAriaLabel=""
-              stateId=""
-              stateSetterId=""
-            ></IntegerInput>
+            <IntegerInput fieldLabel="asd" stateId=""></IntegerInput>
           </Box>
         )}
         {currentView === "hoitoonohjaus" && (
           <Box>
             Hoitoonohjaus{" "}
-            <IntegerInput
-              fieldTitle="asd"
-              fieldAriaLabel=""
-              stateId=""
-              stateSetterId=""
-            ></IntegerInput>
+            <IntegerInput fieldLabel="asd" stateId=""></IntegerInput>
           </Box>
         )}
         {currentView === "tau" && (
           <Box>
-            TAU{" "}
-            <IntegerInput
-              fieldTitle="asd"
-              fieldAriaLabel=""
-              stateId=""
-              stateSetterId=""
-            ></IntegerInput>
+            TAU <IntegerInput fieldLabel="asd" stateId=""></IntegerInput>
           </Box>
         )}
         {currentView === "p1" && (
           <Box>
-            P1{" "}
-            <IntegerInput
-              fieldTitle="asd"
-              fieldAriaLabel=""
-              stateId=""
-              stateSetterId=""
-            ></IntegerInput>
+            P1 <IntegerInput fieldLabel="asd" stateId=""></IntegerInput>
           </Box>
         )}
         {currentView === "p2" && (
           <Box>
-            P2{" "}
-            <IntegerInput
-              fieldTitle="asd"
-              fieldAriaLabel=""
-              stateId=""
-              stateSetterId=""
-            ></IntegerInput>
+            P2 <IntegerInput fieldLabel="asd" stateId=""></IntegerInput>
           </Box>
         )}
         {currentView === "muu" && (
           <Box>
-            Muu{" "}
-            <IntegerInput
-              fieldTitle="asd"
-              fieldAriaLabel=""
-              stateId=""
-              stateSetterId=""
-            ></IntegerInput>
+            Muu <IntegerInput fieldLabel="asd" stateId=""></IntegerInput>
           </Box>
         )}
       </Box>
