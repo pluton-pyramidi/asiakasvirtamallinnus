@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { BoxSx } from "../customStyles/ComponentSx";
-import IntegerInput from "./inputInteger/InputInteger";
+import IntegerInput from "./input/InputInteger";
 
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
@@ -17,9 +17,7 @@ export default function InputBlock() {
             Alkutilanne{" "}
             <IntegerInput
               fieldTitle="Syötä jono"
-              fieldAriaLabel="Syötä jonossa olevien potilaiden lukumäärä"
               stateId="initialQueue"
-              stateSetterId="setInitialQueue"
             ></IntegerInput>
           </Box>
         )}
