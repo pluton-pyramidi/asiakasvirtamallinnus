@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../features/counter/counterSlice";
 import createInputIntegerSlice from "../features/inputInteger/createInputIntegerSlice";
 import viewReducer from "../features/view/viewSlice";
 
@@ -15,7 +14,6 @@ export const {
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
     initialQueue: initialQueueStateSlice.reducer,
     view: viewReducer,
   },
