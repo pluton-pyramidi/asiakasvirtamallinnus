@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import initialQueueReducer from "../features/input/initialQueueSlice";
 import viewReducer from "../features/view/viewSlice";
+import initialQueueReducer from "../features/input/initialQueueSlice";
+import newPatientsMonthlyReducer from "../features/input/newPatientsMonthlySlice";
 
 export default configureStore({
   reducer: {
-    initialQueue: initialQueueReducer,
     view: viewReducer,
+    initialQueue: initialQueueReducer,
+    newPatientsMonthly: newPatientsMonthlyReducer,
   },
 });

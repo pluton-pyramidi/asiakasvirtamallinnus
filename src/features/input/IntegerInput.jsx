@@ -4,20 +4,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { NumberField } from "@base-ui-components/react/number-field";
 import styles from "../../customStyles/numberField.module.css";
 
-export default function ExampleNumberField({ fieldLabel, stateId }) {
+export default function IntegerInput({ fieldLabel, stateId }) {
   const inputState = useSelector((state) => state[stateId]?.value ?? "");
   const dispatch = useDispatch();
   const [sliceAction, setSliceAction] = useState("");
 
+  /* This hook dynamically imports the stateId designated state action */
   useEffect(() => {
-    /* This hook dynamically imports the stateId designated state action */
     const loadSlice = async () => {
       try {
         const module = await import(`./${stateId}Slice.js`);
         console.log(`Loaded slice for stateId: ${stateId}`, module);
-        setSliceAction(
-          () => module.setInput
-        ); /* Thus far this modular number input field only works with a state setter named "setInput" */
+        /* Thus far this modular number input field only works with a state setter named "setInput" */
+        setSliceAction(() => module.setInput);
       } catch (error) {
         console.error(`Failed to load slice for stateId: ${stateId}`, error);
       }

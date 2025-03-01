@@ -3,8 +3,7 @@ import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { BoxSx } from "../customStyles/ComponentSx";
-import IntegerInput from "./input/InputInteger";
-import NumberInput from "./input/numberInput";
+import IntegerInput from "./input/IntegerInput";
 
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
@@ -20,10 +19,10 @@ export default function InputBlock() {
               fieldLabel="Syötä jono"
               stateId="initialQueue"
             ></IntegerInput>
-            <NumberInput
-              fieldLabel="Syötä jono"
-              stateId="initialQueue"
-            ></NumberInput>
+            <IntegerInput
+              fieldLabel="Uusia potilaita/kk"
+              stateId="newPatientsMonthly"
+            ></IntegerInput>
           </Box>
         )}
         {currentView === "ensijasennys" && (
