@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { BoxSx } from "../customStyles/ComponentSx";
 import IntegerInput from "./input/IntegerInput";
+import PercentageInput from "./input/PercentageInput";
 
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
@@ -28,7 +29,14 @@ export default function InputBlock() {
         {currentView === "ensijasennys" && (
           <Box>
             Ensijäsennys{" "}
-            <IntegerInput fieldLabel="asd" stateId=""></IntegerInput>
+            <IntegerInput
+              fieldLabel="Tekijöitä"
+              stateId="laborSoulsEj"
+            ></IntegerInput>
+            <PercentageInput // Clicking and typing in the percentage field is clumsy and unintuitive now. See comment at features/input/PercentageInput.jsx
+              fieldLabel="Työaika-%"
+              stateId="laborPercentageEj"
+            ></PercentageInput>
           </Box>
         )}
         {currentView === "hoitoonohjaus" && (
