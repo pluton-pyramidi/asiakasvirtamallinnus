@@ -1,4 +1,4 @@
-import createInputIntegerSlice from "./createInputIntegerSlice";
+import createInputIntegerSlice from "../../utils/createInputIntegerSlice.js";
 
 const newPatientsMonthlySlice = createInputIntegerSlice(
   "newPatientsMonthly",

@@ -1,5 +1,4 @@
-import { lab } from "d3";
-import createInputIntegerSlice from "./createInputIntegerSlice";
+import createInputIntegerSlice from "../../utils/createInputIntegerSlice.js";
 
 const laborSoulsEjSlice = createInputIntegerSlice("laborSoulsEj", 5);
 

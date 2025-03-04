@@ -1,4 +1,4 @@
-import createInputIntegerSlice from "./createInputIntegerSlice";
+import createInputIntegerSlice from "../../utils/createInputIntegerSlice.js";
 
 const initialQueueSlice = createInputIntegerSlice("initialQueue", 10);
 
