@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import { BoxSx } from "../customStyles/ComponentSx";
 import IntegerInput from "./input/IntegerInput";
 import PercentageInput from "./input/PercentageInput";
+import Start from "./input/Start";
 
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
@@ -15,15 +16,7 @@ export default function InputBlock() {
       <Box>
         {currentView === "alkutilanne" && (
           <Box>
-            Alkutilanne{" "}
-            <IntegerInput
-              fieldLabel="Syötä jono"
-              stateId="initialQueue"
-            ></IntegerInput>
-            <IntegerInput
-              fieldLabel="Uusia potilaita/kk"
-              stateId="newPatientsMonthly"
-            ></IntegerInput>
+            Alkutilanne <Start></Start>
           </Box>
         )}
         {currentView === "ensijasennys" && (
