@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { BoxSx } from "../utils/ComponentSx";
-import IntegerInput from "./input/IntegerInput";
 import Start from "./input/Start";
 import Ej from "./input/Ej";
 

@@ -1,4 +1,4 @@
-import createInputIntegerSlice from "../../utils/createInputIntegerSlice.js";
+import createInputIntegerSlice from "../../../utils/createInputIntegerSlice.js";
 
 const laborSoulsEjSlice = createInputIntegerSlice("laborSoulsEj", 5);
 
