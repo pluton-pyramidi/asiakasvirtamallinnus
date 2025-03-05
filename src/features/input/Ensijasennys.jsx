@@ -4,12 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 import NumberInput from "../../components/NumberInput";
 import PercentageInput from "../../components/PercentageInput";
 import { Box, Button } from "@mui/material";
-import { setEj } from "./ejSlice";
+import { setEnsijasennys } from "./ensijasennysSlice";
 
-export default function Ej() {
-  const ej = useSelector((state) => state.ej);
+export default function Ensijasennys() {
+  const ensijasennys = useSelector((state) => state.ensijasennys);
   const dispatch = useDispatch();
-  const [input, setInput] = useState(ej);
+  const [input, setInput] = useState(ensijasennys);
 
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
@@ -20,23 +20,26 @@ export default function Ej() {
 
   const handleSubmit = () => {
     console.log("Dispatching input state:", input);
-    dispatch(setEj(input));
+    dispatch(setEnsijasennys(input));
   };
 
   return (
     <Box>
       <NumberInput
         label="Tekijöitä"
-        value={input.laborEj}
+        value={input.laborEnsijasennys}
         handleChange={(e) =>
-          handleInputChange("laborEj", Number(e.target.value))
+          handleInputChange("laborEnsijasennys", Number(e.target.value))
         }
       />
       <PercentageInput
         label="Työaika-%"
-        value={input.laborPercentageEj}
+        value={input.laborPercentageEnsijasennys}
         handleChange={(e) =>
-          handleInputChange("laborPercentageEj", Number(e.target.value))
+          handleInputChange(
+            "laborPercentageEnsijasennys",
+            Number(e.target.value)
+          )
         }
       />
       <Button onClick={handleSubmit}>Submit</Button>

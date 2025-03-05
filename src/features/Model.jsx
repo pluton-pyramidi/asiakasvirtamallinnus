@@ -10,7 +10,7 @@ export default function Model() {
 
       <SelectViewButton
         viewName="Alkutilanne"
-        viewId="alkutilanne"
+        viewId="start"
       ></SelectViewButton>
       <SelectViewButton
         viewName="Ensijäsennys"
@@ -18,7 +18,7 @@ export default function Model() {
       ></SelectViewButton>
       <SelectViewButton
         viewName="Hoitoonohjaus"
-        viewId="hoitoonohjaus"
+        viewId="hoitoonOhjaus"
       ></SelectViewButton>
       <SelectViewButton viewName="TAU" viewId="tau"></SelectViewButton>
       <SelectViewButton viewName="P1" viewId="p1"></SelectViewButton>

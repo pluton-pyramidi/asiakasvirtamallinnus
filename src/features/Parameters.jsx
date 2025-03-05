@@ -10,9 +10,9 @@ export default function Parameters() {
   return (
     <Box sx={BoxSx}>
       <Typography>Oletukset ja parametrit</Typography>
-      {currentView === "alkutilanne" && <Box>Alkutilanne</Box>}
+      {currentView === "start" && <Box>Alkutilanne</Box>}
       {currentView === "ensijasennys" && <Box>Ensijäsennys</Box>}
-      {currentView === "hoitoonohjaus" && <Box>Hoitoonohjaus</Box>}
+      {currentView === "hoitoonOhjaus" && <Box>Hoitoonohjaus</Box>}
       {currentView === "tau" && <Box>TAU</Box>}
       {currentView === "p1" && <Box>P1</Box>}
       {currentView === "p2" && <Box>P2</Box>}

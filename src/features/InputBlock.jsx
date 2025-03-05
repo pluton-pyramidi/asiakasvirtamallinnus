@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { BoxSx } from "../utils/ComponentSx";
 import Start from "./input/Start";
-import Ej from "./input/Ej";
+import Ensijasennys from "./input/Ensijasennys";
 
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
@@ -13,17 +13,17 @@ export default function InputBlock() {
     <Box sx={BoxSx}>
       <Typography>Ohjeet tähän</Typography>
       <Box>
-        {currentView === "alkutilanne" && (
+        {currentView === "start" && (
           <Box>
             Alkutilanne <Start></Start>
           </Box>
         )}
         {currentView === "ensijasennys" && (
           <Box>
-            Ensijäsennys <Ej></Ej>
+            Ensijäsennys <Ensijasennys></Ensijasennys>
           </Box>
         )}
-        {currentView === "hoitoonohjaus" && <Box>Hoitoonohjaus </Box>}
+        {currentView === "hoitoonOhjaus" && <Box>Hoitoonohjaus </Box>}
         {currentView === "tau" && <Box>TAU</Box>}
         {currentView === "p1" && <Box>P1</Box>}
         {currentView === "p2" && <Box>P2</Box>}
