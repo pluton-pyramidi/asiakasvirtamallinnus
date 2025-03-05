@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NumberField } from "@base-ui-components/react/number-field";
-import styles from "../../customStyles/numberField.module.css";
+import styles from "../../utils/numberField.module.css";
 
 // Clicking and typing in the field is clumsy and unintuitive now.
 // The user must input decimal numbers (all integers are interpreted as 1 => 100 %)

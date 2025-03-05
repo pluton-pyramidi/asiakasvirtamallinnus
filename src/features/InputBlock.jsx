@@ -2,7 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
-import { BoxSx } from "../customStyles/ComponentSx";
+import { BoxSx } from "../utils/ComponentSx";
 import IntegerInput from "./input/IntegerInput";
 import PercentageInput from "./input/PercentageInput";
 import Start from "./input/Start";

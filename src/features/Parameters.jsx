@@ -2,7 +2,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { BoxSx } from "../customStyles/ComponentSx";
+import { BoxSx } from "../utils/ComponentSx";
 import IntegerInput from "./input/IntegerInput";
 
 export default function Parameters() {

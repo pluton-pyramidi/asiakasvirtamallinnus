@@ -1,6 +1,6 @@
 import * as React from "react";
 import { NumberField } from "@base-ui-components/react/number-field";
-import styles from "../customStyles/numberField.module.css";
+import styles from "../utils/numberField.module.css";
 
 export default function NumberInput(props) {
   const handleValueChange = (value, event) => {

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NumberField } from "@base-ui-components/react/number-field";
-import styles from "../../customStyles/numberField.module.css";
+import styles from "../../utils/numberField.module.css";
 
 export default function IntegerInput({ fieldLabel, stateId }) {
   const inputState = useSelector((state) => state[stateId]?.value ?? "");
