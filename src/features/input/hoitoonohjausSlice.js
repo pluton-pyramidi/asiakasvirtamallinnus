@@ -1,20 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  hoitoonOhjausTAU: 5,
-  hoitoonOhjausSteppedCare: 0.5,
+  hoitoonohjausTAU: 0.5,
+  hoitoonohjausSteppedCare: 0.5,
 };
 
-const hoitoonOhjausSlice = createSlice({
-  name: "hoitoonOhjaus",
+const hoitoonohjausSlice = createSlice({
+  name: "hoitoonohjaus",
   initialState,
   reducers: {
-    sethoitoonOhjaus: (state, action) => {
-      state.hoitoonOhjausTAU = action.payload.hoitoonOhjausTAU;
-      state.hoitoonOhjausSteppedCare = action.payload.hoitoonOhjausSteppedCare;
+    sethoitoonohjaus: (state, action) => {
+      state.hoitoonohjausTAU = action.payload.hoitoonohjausTAU;
+      state.hoitoonohjausSteppedCare = action.payload.hoitoonohjausSteppedCare;
     },
   },
 });
 
-export const { setHoitoonOhjaus } = hoitoonOhjausSlice.actions;
-export default hoitoonOhjausSlice.reducer;
+export const { setHoitoonohjaus } = hoitoonohjausSlice.actions;
+export default hoitoonohjausSlice.reducer;

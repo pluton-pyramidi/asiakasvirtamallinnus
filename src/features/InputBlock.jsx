@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import { BoxSx } from "../utils/ComponentSx";
 import Start from "./input/Start";
 import Ensijasennys from "./input/Ensijasennys";
+import Hoitoonohjaus from "./input/Hoitoonohjaus";
 
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
@@ -23,7 +24,11 @@ export default function InputBlock() {
             Ensijäsennys <Ensijasennys></Ensijasennys>
           </Box>
         )}
-        {currentView === "hoitoonOhjaus" && <Box>Hoitoonohjaus </Box>}
+        {currentView === "hoitoonOhjaus" && (
+          <Box>
+            Hoitoonohjaus <Hoitoonohjaus></Hoitoonohjaus>
+          </Box>
+        )}
         {currentView === "tau" && <Box>TAU</Box>}
         {currentView === "p1" && <Box>P1</Box>}
         {currentView === "p2" && <Box>P2</Box>}
