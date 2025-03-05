@@ -5,6 +5,7 @@ import newPatientsMonthlyReducer from "../features/input/newPatientsMonthlySlice
 import laborSoulsEjReducer from "../features/input/laborSoulsEjSlice";
 import laborPercentageEjReducer from "../features/input/laborPercentageEjSlice";
 import startReducer from "../features/input/startSlice";
+import ejReducer from "../features/input/ejSlice";
 
 export default configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export default configureStore({
     laborSoulsEj: laborSoulsEjReducer,
     laborPercentageEj: laborPercentageEjReducer,
     start: startReducer,
+    ej: ejReducer,
   },
 });

@@ -2,7 +2,11 @@ import * as React from "react";
 import { NumberField } from "@base-ui-components/react/number-field";
 import styles from "../utils/numberField.module.css";
 
-export default function NumberInput(props) {
+// Clicking and typing in the field is clumsy and very unintuitive now.
+// The user must input decimal numbers (all integers are interpreted as 1 => 100 %) AND the user must enter the input before the %-symbol. No input is registered if input is entered after the %-symbol.
+// Also after typing, the rendered field value doesn't update & format until the user clicks themselves "out" of the field (event: focusout). Pressing "Enter" would be a nice option.
+
+export default function PercentageInput(props) {
   const handleValueChange = (value, event = {}) => {
     if (event && event.type) {
       console.log("Event type:", event.type);
@@ -12,7 +16,19 @@ export default function NumberInput(props) {
 
   return (
     <NumberField.Root
+      min={0}
+      max={1}
+      step={0.01}
+      smallStep={0.001}
+      largeStep={0.1}
       value={props.value}
+      format={
+        ("en-US",
+        {
+          style: "percent",
+          maximumFractionDigits: 3,
+        })
+      }
       className={styles.Field}
       onValueChange={handleValueChange}
     >
