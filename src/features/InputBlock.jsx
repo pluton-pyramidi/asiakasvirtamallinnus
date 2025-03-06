@@ -6,6 +6,8 @@ import { BoxSx } from "../utils/ComponentSx";
 import Start from "./input/Start";
 import Ensijasennys from "./input/Ensijasennys";
 import Hoitoonohjaus from "./input/Hoitoonohjaus";
+import Tau from "./input/Tau";
+import StepOne from "./input/StepOne";
 
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
@@ -29,8 +31,16 @@ export default function InputBlock() {
             Hoitoonohjaus <Hoitoonohjaus></Hoitoonohjaus>
           </Box>
         )}
-        {currentView === "tau" && <Box>TAU</Box>}
-        {currentView === "p1" && <Box>P1</Box>}
+        {currentView === "tau" && (
+          <Box>
+            TAU <Tau></Tau>
+          </Box>
+        )}
+        {currentView === "p1" && (
+          <Box>
+            P1 <StepOne></StepOne>
+          </Box>
+        )}
         {currentView === "p2" && <Box>P2</Box>}
         {currentView === "muu" && <Box>Muu</Box>}
       </Box>

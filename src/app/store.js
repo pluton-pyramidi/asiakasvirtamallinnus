@@ -3,6 +3,8 @@ import viewReducer from "../features/view/viewSlice";
 import startReducer from "../features/input/startSlice";
 import ensijasennysReducer from "../features/input/ensijasennysSlice";
 import hoitoonohjausReducer from "../features/input/hoitoonohjausSlice";
+import tauReducer from "../features/input/tauSlice";
+import stepOneReducer from "../features/input/stepOneSlice";
 
 export default configureStore({
   reducer: {
@@ -10,5 +12,7 @@ export default configureStore({
     start: startReducer,
     ensijasennys: ensijasennysReducer,
     hoitoonohjaus: hoitoonohjausReducer,
+    tau: tauReducer,
+    stepOne: stepOneReducer,
   },
 });
