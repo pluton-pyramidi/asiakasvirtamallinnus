@@ -9,7 +9,7 @@ const hoitoonohjausSlice = createSlice({
   name: "hoitoonohjaus",
   initialState,
   reducers: {
-    sethoitoonohjaus: (state, action) => {
+    setHoitoonohjaus: (state, action) => {
       state.hoitoonohjausTAU = action.payload.hoitoonohjausTAU;
       state.hoitoonohjausSteppedCare = action.payload.hoitoonohjausSteppedCare;
     },

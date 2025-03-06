@@ -28,14 +28,14 @@ export default function Hoitoonohjaus() {
         label="TAU %"
         value={input.hoitoonohjausTAU}
         handleChange={(e) =>
-          handleInputChange("HoitoonohjausTAU", Number(e.target.value))
+          handleInputChange("hoitoonohjausTAU", Number(e.target.value))
         }
       />
       <PercentageInput
         label="Porrastettu hoito %"
         value={input.hoitoonohjausSteppedCare}
         handleChange={(e) =>
-          handleInputChange("HoitoonohjausSteppedCare", Number(e.target.value))
+          handleInputChange("hoitoonohjausSteppedCare", Number(e.target.value))
         }
       />
       <Button onClick={handleSubmit}>Submit</Button>
