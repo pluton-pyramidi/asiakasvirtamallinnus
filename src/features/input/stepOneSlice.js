@@ -19,4 +19,9 @@ const stepOneSlice = createSlice({
 });
 
 export const { setStepOne } = stepOneSlice.actions;
+
+// Selector to derive hoitoonohjausStepTwo
+export const selectHoitoonohjausStepTwo = (state) =>
+  1 - state.stepOne.hoitoonohjausStepOne;
+
 export default stepOneSlice.reducer;
