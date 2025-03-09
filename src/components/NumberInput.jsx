@@ -12,6 +12,7 @@ export default function NumberInput(props) {
 
   return (
     <NumberField.Root
+      min={0}
       value={props.value}
       className={styles.Field}
       onValueChange={handleValueChange}
