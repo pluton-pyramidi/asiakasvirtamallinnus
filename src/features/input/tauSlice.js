@@ -30,8 +30,6 @@ export const { setTau } = tauSlice.actions;
 export const calculateInsufficencyRateTau = (state) =>
   1 - state.tau.sufficiencyRateTau;
 
-export const calculateTauToQueueRate = (state) => {
-  1 - state.tau.tauToMuuRate;
-};
+export const calculateTauToQueueRate = (state) => 1 - state.tau.tauToMuuRate;
 
 export default tauSlice.reducer;
