@@ -6,6 +6,7 @@ import hoitoonohjausReducer from "../features/input/hoitoonohjausSlice";
 import tauReducer from "../features/input/tauSlice";
 import stepOneReducer from "../features/input/stepOneSlice";
 import stepTwoReducer from "../features/input/stepTwoSlice";
+import muuReducer from "../features/input/muuSlice";
 
 export default configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export default configureStore({
     tau: tauReducer,
     stepOne: stepOneReducer,
     stepTwo: stepTwoReducer,
+    muu: muuReducer,
   },
 });
