@@ -34,4 +34,18 @@ export const { setStepOne } = stepOneSlice.actions;
 export const calculateHoitoonohjausStepTwo = (state) =>
   1 - state.stepOne.hoitoonohjausStepOne;
 
+export const calculateInsufficencyRateStepOne = (state) =>
+  1 - state.stepOne.sufficiencyRateStepOne;
+
+export const calculateStepOneToQueueRate = (state) => {
+  const total =
+    state.stepOne.stepOneToStepTwoRate + state.stepOne.stepOneToMuuRate;
+
+  if (total > 1) {
+    return 0;
+  } else {
+    return 1 - total;
+  }
+};
+
 export default stepOneSlice.reducer;
