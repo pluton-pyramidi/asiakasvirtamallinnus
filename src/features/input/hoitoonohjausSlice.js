@@ -17,4 +17,18 @@ const hoitoonohjausSlice = createSlice({
 });
 
 export const { setHoitoonohjaus } = hoitoonohjausSlice.actions;
+
+// Selector to derive hoitoonohjausMuu
+export const calculateHoitoonohjausMuu = (state) => {
+  const hoitoonohjausTotal =
+    state.hoitoonohjaus.hoitoonohjausTAU +
+    state.hoitoonohjaus.hoitoonohjausSteppedCare;
+
+  if (hoitoonohjausTotal > 1) {
+    return 0;
+  } else {
+    return 1 - hoitoonohjausTotal;
+  }
+};
+
 export default hoitoonohjausSlice.reducer;

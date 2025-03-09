@@ -8,7 +8,7 @@ import Ensijasennys from "./input/Ensijasennys";
 import Hoitoonohjaus from "./input/Hoitoonohjaus";
 import Tau from "./input/Tau";
 import StepOne from "./input/StepOne";
-import StepTwo from "./input/stepTwo";
+import StepTwo from "./input/StepTwo";
 
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);

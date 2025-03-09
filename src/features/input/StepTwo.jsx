@@ -5,11 +5,11 @@ import NumberInput from "../../components/NumberInput";
 import PercentageInput from "../../components/PercentageInput";
 import { Box, Button, Typography } from "@mui/material";
 import { setStepTwo } from "./stepTwoSlice";
-import { selectHoitoonohjausStepTwo } from "./stepOneSlice";
+import { calculateHoitoonohjausStepTwo } from "./stepOneSlice";
 
 export default function StepTwo() {
   const stepTwo = useSelector((state) => state.stepTwo);
-  const hoitoonohjausStepTwo = useSelector(selectHoitoonohjausStepTwo);
+  const hoitoonohjausStepTwo = useSelector(calculateHoitoonohjausStepTwo);
   const dispatch = useDispatch();
   const [input, setInput] = useState(stepTwo);
 
