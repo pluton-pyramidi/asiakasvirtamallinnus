@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import { BoxSx } from "../utils/ComponentSx";
 import EnsijasennysParams from "./input/EnsijasennysParams";
 import TauParams from "./input/TauParams";
+import StepOneParams from "./input/StepOneParams";
 
 export default function Parameters() {
   const currentView = useSelector((state) => state.view.currentView);
@@ -24,7 +25,11 @@ export default function Parameters() {
           TAU <TauParams></TauParams>
         </Box>
       )}
-      {currentView === "p1" && <Box>P1</Box>}
+      {currentView === "p1" && (
+        <Box>
+          P1 <StepOneParams></StepOneParams>
+        </Box>
+      )}
       {currentView === "p2" && <Box>P2</Box>}
       {currentView === "muu" && <Box>Muu</Box>}
     </Box>
