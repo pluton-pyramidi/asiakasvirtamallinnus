@@ -7,6 +7,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { setStepTwo } from "./stepTwoSlice";
 import { calculateHoitoonohjausStepTwo } from "./stepOneSlice";
 
+// This feature renders the set of input fields and submit button for inputting/changing the StepTwo labor variables in the StepTwo state slice
 export default function StepTwo() {
   const stepTwo = useSelector((state) => state.stepTwo);
   const hoitoonohjausStepTwo = useSelector(calculateHoitoonohjausStepTwo);
@@ -20,6 +21,7 @@ export default function StepTwo() {
     }));
   };
 
+  // handleSubmit on the other hand manages the dispatch of the same state values to the Redux state store
   const handleSubmit = () => {
     console.log("Dispatching input state:", input);
     dispatch(setStepTwo(input));

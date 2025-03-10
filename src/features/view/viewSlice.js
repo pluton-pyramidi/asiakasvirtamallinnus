@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// This state represents the set of values which are displayed for input/changing at a time, selected by clicking buttons in Model.jsx
 const initialState = {
   currentView: "view1",
 };

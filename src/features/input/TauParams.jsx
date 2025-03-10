@@ -10,6 +10,7 @@ import {
   calculateTauToQueueRate,
 } from "./tauSlice";
 
+// This feature renders the set of input fields and submit button for inputting/changing the TAU parameter variables in the TAU state slice
 export default function TauParams() {
   const tau = useSelector((state) => state.tau);
   const insufficiencyRateTau = useSelector(calculateInsufficencyRateTau);

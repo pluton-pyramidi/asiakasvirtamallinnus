@@ -10,6 +10,7 @@ import {
   calculateStepOneToQueueRate,
 } from "./stepOneSlice";
 
+// This feature renders the set of input fields and submit button for inputting/changing the StepOne parameter variables in the StepOne state slice
 export default function StepOneParams() {
   const stepOne = useSelector((state) => state.stepOne);
   const insufficiencyRateStepOne = useSelector(
@@ -20,7 +21,7 @@ export default function StepOneParams() {
   const [input, setInput] = useState(stepOne);
 
   // handleInputChange manages the local state ("input") visible in the input fields.
-  // It also performs data validation to check that the total input does not exceed 100 %.
+  // It also enforces data validation so that the total input does not exceed 100 %.
   const handleInputChange = (field, value) => {
     setInput((prevInput) => {
       const newInput = { ...prevInput, [field]: value };
@@ -50,7 +51,7 @@ export default function StepOneParams() {
       return newInput;
     });
   };
-
+  // handleSubmit on the other hand manages the dispatch of the same state values to the Redux state store
   const handleSubmit = () => {
     console.log("Dispatching input state:", input);
     dispatch(setStepOne(input));

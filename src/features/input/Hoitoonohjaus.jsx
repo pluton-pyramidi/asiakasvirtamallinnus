@@ -15,7 +15,7 @@ export default function Hoitoonohjaus() {
   const [input, setInput] = useState(hoitoonohjaus);
 
   // handleInputChange manages the local state ("input") visible in the input fields.
-  // It also performs data validation to check that the total input does not exceed 100 %.
+  // It also enforces data validation so that the total input does not exceed 100 %.
   const handleInputChange = (field, value) => {
     setInput((prevInput) => {
       const newInput = { ...prevInput, [field]: value };
@@ -47,6 +47,7 @@ export default function Hoitoonohjaus() {
     });
   };
 
+  // handleSubmit on the other hand manages the dispatch of the same state values to the Redux state store
   const handleSubmit = () => {
     console.log("Dispatching input state:", input);
     dispatch(setHoitoonohjaus(input));

@@ -6,6 +6,7 @@ import PercentageInput from "../../components/PercentageInput";
 import { Box, Button } from "@mui/material";
 import { setTau } from "./tauSlice";
 
+// This feature renders the set of input fields and submit button for inputting/changing the TAU labor variables in the TAU state slice
 export default function Tau() {
   const tau = useSelector((state) => state.tau);
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ export default function Tau() {
     }));
   };
 
+  // handleSubmit on the other hand manages the dispatch of the same state values to the Redux state store
   const handleSubmit = () => {
     console.log("Dispatching input state:", input);
     dispatch(setTau(input));

@@ -10,6 +10,7 @@ import Tau from "./input/Tau";
 import StepOne from "./input/StepOne";
 import StepTwo from "./input/StepTwo";
 
+// InputBlock houses the input fields for each set of values, based on which view state is active
 export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
 

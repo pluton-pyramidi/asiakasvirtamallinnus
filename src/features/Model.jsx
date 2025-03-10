@@ -3,6 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { BoxSx } from "../utils/ComponentSx";
 import SelectViewButton from "./view/SelectViewButton";
 
+// This component houses the buttons which control which set of values is displayed for inputting/changing input.
 export default function Model() {
   return (
     <Box sx={BoxSx}>

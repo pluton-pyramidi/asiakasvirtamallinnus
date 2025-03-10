@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// TAU (Treatment-as-usual) state for the inputvalues and parameters of this treatment module
 const initialState = {
   laborTau: 5,
   laborPercentageTau: 0.5,
