@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { BoxSx } from "../utils/ComponentSx";
+import EnsijasennysParams from "./input/EnsijasennysParams";
 import TauParams from "./input/TauParams";
 
 export default function Parameters() {
@@ -12,7 +13,11 @@ export default function Parameters() {
     <Box sx={BoxSx}>
       <Typography>Oletukset ja parametrit</Typography>
       {currentView === "start" && <Box>Alkutilanne</Box>}
-      {currentView === "ensijasennys" && <Box>Ensijäsennys</Box>}
+      {currentView === "ensijasennys" && (
+        <Box>
+          Ensijäsennys <EnsijasennysParams></EnsijasennysParams>
+        </Box>
+      )}
       {currentView === "hoitoonOhjaus" && <Box>Hoitoonohjaus</Box>}
       {currentView === "tau" && (
         <Box>
