@@ -7,6 +7,7 @@ import EnsijasennysParams from "./input/EnsijasennysParams";
 import TauParams from "./input/TauParams";
 import StepOneParams from "./input/StepOneParams";
 import StepTwoParams from "./input/StepTwoParams";
+import MuuParams from "./input/MuuParams";
 
 // Parameters.jsx component houses the input fields for each set of parameters values, based on which view state is active
 export default function Parameters() {
@@ -37,7 +38,11 @@ export default function Parameters() {
           P2 <StepTwoParams></StepTwoParams>
         </Box>
       )}
-      {currentView === "muu" && <Box>Muu</Box>}
+      {currentView === "muu" && (
+        <Box>
+          Muu <MuuParams></MuuParams>
+        </Box>
+      )}
     </Box>
   );
 }
