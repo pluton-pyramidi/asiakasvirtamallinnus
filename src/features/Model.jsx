@@ -19,7 +19,7 @@ export default function Model() {
       ></SelectViewButton>
       <SelectViewButton
         viewName="Hoitoonohjaus"
-        viewId="hoitoonOhjaus"
+        viewId="hoitoonohjaus"
       ></SelectViewButton>
       <SelectViewButton viewName="TAU" viewId="tau"></SelectViewButton>
       <SelectViewButton viewName="P1" viewId="p1"></SelectViewButton>

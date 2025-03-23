@@ -29,7 +29,9 @@ export default function StepTwo() {
 
   return (
     <Box>
-      <Typography>{hoitoonohjausStepTwo}</Typography>
+      <Typography>
+        Hoitoonohjaus: {Math.round(hoitoonohjausStepTwo * 100)} %
+      </Typography>
       <NumberInput
         label="Tekijöitä"
         value={input.laborStepTwo}

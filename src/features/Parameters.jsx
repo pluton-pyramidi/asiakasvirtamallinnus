@@ -6,6 +6,7 @@ import { BoxSx } from "../utils/ComponentSx";
 import EnsijasennysParams from "./input/EnsijasennysParams";
 import TauParams from "./input/TauParams";
 import StepOneParams from "./input/StepOneParams";
+import StepTwoParams from "./input/StepTwoParams";
 
 // Parameters.jsx component houses the input fields for each set of parameters values, based on which view state is active
 export default function Parameters() {
@@ -20,7 +21,7 @@ export default function Parameters() {
           Ensijäsennys <EnsijasennysParams></EnsijasennysParams>
         </Box>
       )}
-      {currentView === "hoitoonOhjaus" && <Box>Hoitoonohjaus</Box>}
+      {currentView === "hoitoonohjaus" && <Box>Hoitoonohjaus</Box>}
       {currentView === "tau" && (
         <Box>
           TAU <TauParams></TauParams>
@@ -31,7 +32,11 @@ export default function Parameters() {
           P1 <StepOneParams></StepOneParams>
         </Box>
       )}
-      {currentView === "p2" && <Box>P2</Box>}
+      {currentView === "p2" && (
+        <Box>
+          P2 <StepTwoParams></StepTwoParams>
+        </Box>
+      )}
       {currentView === "muu" && <Box>Muu</Box>}
     </Box>
   );

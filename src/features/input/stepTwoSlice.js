@@ -4,7 +4,7 @@ const initialState = {
   laborStepTwo: 5,
   laborPercentageStepTwo: 0.5,
   sufficiencyRateStepTwo: 0.5,
-  stepTwoToMuuRate: 0.5,
+  stepTwoToMuuRate: 0.2,
   meetingDurationStepTwo: 90,
   laborEfficiencyStepTwo: 0.8,
 };
@@ -29,9 +29,6 @@ export const { setStepTwo } = stepTwoSlice.actions;
 // Selectors to derive variables from this state
 export const calculateInsufficencyRateStepTwo = (state) =>
   1 - state.stepTwo.sufficiencyRateStepTwo;
-
-export const calculateStepTwoToQueueRate = (state) => {
+export const calculateStepTwoToQueueRate = (state) =>
   1 - state.stepTwo.stepTwoToMuuRate;
-};
-
 export default stepTwoSlice.reducer;
