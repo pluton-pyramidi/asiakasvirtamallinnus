@@ -28,7 +28,7 @@ export default function InputBlock() {
             Ensijäsennys <Ensijasennys></Ensijasennys>
           </Box>
         )}
-        {currentView === "hoitoonOhjaus" && (
+        {currentView === "hoitoonohjaus" && (
           <Box>
             Hoitoonohjaus <Hoitoonohjaus></Hoitoonohjaus>
           </Box>
