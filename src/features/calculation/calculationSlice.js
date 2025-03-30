@@ -55,10 +55,19 @@ export const calculateSimulationBalance = createAsyncThunk(
     const maxSixMonthsCapacityStepOne = maxWeeklyCapacityStepOne * 24;
     const maxSixMonthsCapacityStepTwo = maxWeeklyCapacityStepTwo * 24;
 
+    // Patient flow
+    cycleDuration = 6; // Simulation time cycle (months)
+
     const staff = [];
 
     const balance =
-      start + ensijasennys + hoitoonohjaus + tau + stepOne + stepTwo + muu;
+      patientInput +
+      ensijasennys +
+      hoitoonohjaus +
+      tau +
+      stepOne +
+      stepTwo +
+      muu;
     return balance;
   }
 );
