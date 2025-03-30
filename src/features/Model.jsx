@@ -11,7 +11,7 @@ export default function Model() {
 
       <SelectViewButton
         viewName="Alkutilanne"
-        viewId="start"
+        viewId="patientInput"
       ></SelectViewButton>
       <SelectViewButton
         viewName="Ensijäsennys"

@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { BoxSx } from "../utils/ComponentSx";
-import Start from "./input/Start";
+import PatientInput from "./input/PatientInput";
 import Ensijasennys from "./input/Ensijasennys";
 import Hoitoonohjaus from "./input/Hoitoonohjaus";
 import Tau from "./input/Tau";
@@ -18,9 +18,9 @@ export default function InputBlock() {
     <Box sx={BoxSx}>
       <Typography>Ohjeet tähän</Typography>
       <Box>
-        {currentView === "start" && (
+        {currentView === "patientInput" && (
           <Box>
-            Alkutilanne <Start></Start>
+            Alkutilanne <PatientInput></PatientInput>
           </Box>
         )}
         {currentView === "ensijasennys" && (

@@ -5,16 +5,16 @@ const initialState = {
   newPatientsPerMonth: 10,
 };
 
-const startSlice = createSlice({
-  name: "start",
+const patientInputSlice = createSlice({
+  name: "patientInput",
   initialState,
   reducers: {
-    setStart: (state, action) => {
+    setPatientInput: (state, action) => {
       state.initialQueue = action.payload.initialQueue;
       state.newPatientsPerMonth = action.payload.newPatientsPerMonth;
     },
   },
 });
 
-export const { setStart } = startSlice.actions;
-export default startSlice.reducer;
+export const { setPatientInput } = patientInputSlice.actions;
+export default patientInputSlice.reducer;

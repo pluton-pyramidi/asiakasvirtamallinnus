@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NumberInput from "../../components/NumberInput";
 import { Box, Button } from "@mui/material";
-import { setStart } from "./startSlice";
+import { setPatientInput } from "./patientInputSlice";
 
 export default function Start() {
   const start = useSelector((state) => state.start);
@@ -20,7 +20,7 @@ export default function Start() {
   // handleSubmit on the other hand manages the dispatch of the same state values to the Redux state store
   const handleSubmit = () => {
     console.log("Dispatching input state:", input);
-    dispatch(setStart(input));
+    dispatch(setPatientInput(input));
   };
 
   return (

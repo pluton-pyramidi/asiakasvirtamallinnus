@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import viewReducer from "../features/view/viewSlice";
-import startReducer from "../features/input/startSlice";
+import patientInputReducer from "../features/input/patientInputSlice";
 import ensijasennysReducer from "../features/input/ensijasennysSlice";
 import hoitoonohjausReducer from "../features/input/hoitoonohjausSlice";
 import tauReducer from "../features/input/tauSlice";
@@ -11,7 +11,7 @@ import muuReducer from "../features/input/muuSlice";
 export default configureStore({
   reducer: {
     view: viewReducer,
-    start: startReducer,
+    patientInput: patientInputReducer,
     ensijasennys: ensijasennysReducer,
     hoitoonohjaus: hoitoonohjausReducer,
     tau: tauReducer,

@@ -16,7 +16,7 @@ export default function Parameters() {
   return (
     <Box sx={BoxSx}>
       <Typography>Oletukset ja parametrit</Typography>
-      {currentView === "start" && <Box>Alkutilanne</Box>}
+      {currentView === "patientInput" && <Box>Alkutilanne</Box>}
       {currentView === "ensijasennys" && (
         <Box>
           Ensijäsennys <EnsijasennysParams></EnsijasennysParams>
