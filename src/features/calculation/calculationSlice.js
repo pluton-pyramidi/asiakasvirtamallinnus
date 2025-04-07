@@ -13,8 +13,9 @@ import {
   calculateTauToQueueRate,
 } from "./tauSlice";
 import { calculateHoitoonohjausMuu } from "./hoitoonohjausSlice";
+import { calculateInsufficencyRateMuu } from "../input/muuSlice";
 
-// Thunk to calculate the simulation balance and return the result
+// Thunk to calculate the simulation balance and return the result array for the graph
 export const calculateSimulationBalance = createAsyncThunk(
   "balance/calculateSimulationBalance",
   async (_, { getState }) => {
@@ -31,7 +32,7 @@ export const calculateSimulationBalance = createAsyncThunk(
     // Simulation parameters
     // ---------------------------------------
 
-    // How many hours a professional is allocated to doing this treatment per week
+    // How many hours each professional is assigned to produce this treatment per week
     const treatmentHoursPerWeekEj =
       state.ensijasennys.laborPercentageEnsijasennys * workingHoursDaily * 5;
     const treatmentHoursPerWeekTau =
@@ -41,7 +42,7 @@ export const calculateSimulationBalance = createAsyncThunk(
     const treatmentHoursPerWeekStepTwo =
       state.stepTwo.laborPercentageStepTwo * workingHoursDaily * 5;
 
-    // How many appointments professional has per treatment per week (rounded down)
+    // How many appointments each professional has per treatment per week (rounded down)
     const appointmentsPerWeekEj = Math.floor(
       treatmentHoursPerWeekEj /
         ((state.ensijasennys.meetingDurationEnsijasennys / 60) *
@@ -88,6 +89,7 @@ export const calculateSimulationBalance = createAsyncThunk(
     const insufficencyRateTau = calculateInsufficencyRateTau(state);
     const insufficencyRateStepOne = calculateInsufficencyRateStepOne(state);
     const insufficencyRateStepTwo = calculateInsufficencyRateStepTwo(state);
+    const insufficencyRateMuu = calculateInsufficencyRateMuu(state);
 
     // Calculate the rate of patients returning to queue after treatment
     // aka. % of patients who aren't re-referred for further treatment, but then return to queue seeking for more help (tends to happen in real life)
@@ -112,7 +114,7 @@ export const calculateSimulationBalance = createAsyncThunk(
         : patientInputTotalPerCycle;
 
     // Patient input to TAU per cycle
-    // Input based on the patient input to Ensijäsennys, the referral rate to TAU & current TAU capacity
+    // Input based on patient input to Ensijäsennys, referral rate to TAU, & current TAU capacity
     const patientInputPerCycleTau =
       patientInputPerCycleEj * state.hoitoonohjaus.hoitoonohjausTau >
       maxCycleCapacityTau
@@ -122,9 +124,13 @@ export const calculateSimulationBalance = createAsyncThunk(
     // Re-referral rates from TAU
     const patientReReferralsPerMonthTau =
       (patientInputPerCycleTau * insufficencyRateTau) / cycleDuration;
+    const patientReReferralsPerMonthTauToMuu =
+      patientReReferralsPerMonthTau * state.tau.tauToMuuRate;
+    const patientFlowPerMonthTauToQueue =
+      patientReReferralsPerMonthTau * tauToQueueRate;
 
     // Patient input to step one per cycle
-    // Input based on patient flow from Ensijäsennys and the two referral rates: 1) to stepped care and 2) to step one
+    // Input based on patient flow from Ensijäsennys, and two referral rates: 1) to stepped care, and 2) to step one
     const patientInputPerCycleStepOne =
       patientInputPerCycleEj *
         state.hoitoonohjaus.hoitoonohjausSteppedCare *
@@ -140,32 +146,45 @@ export const calculateSimulationBalance = createAsyncThunk(
       (patientInputPerCycleStepOne * insufficencyRateStepOne) / cycleDuration;
     const patientReReferralsPerMonthStepOneToStepTwo =
       patientReReferralsPerMonthStepOne * state.stepOne.stepOneToStepTwoRate;
+    const patientReReferralsPerMonthStepOneToMuu =
+      patientReReferralsPerMonthStepOne * state.stepOne.stepOneToMuuRate;
+    const patientFlowPerMonthStepOneToQueue =
+      patientReReferralsPerMonthStepOne * stepOneToQueueRate;
 
     // Patient input to step two
-    // Calculated based on patient input, two referral rates and the re-referral rate from step one to step two (insufficiency rate)
-    const patientInputStepTwo =
+    // Based on patient input, two referral rates and the re-referral rate from step one to step two
+    const patientInputPerCycleStepTwo =
       patientInputPerCycleEj *
         state.hoitoonohjaus.hoitoonohjausSteppedCare *
         calculateHoitoonohjausStepTwo(state) +
-        patientInputPerCycleStepOne *
-          state.stepOne.stepOneToStepTwoRate *
-          cycleDuration >
+        patientReReferralsPerMonthStepOneToStepTwo * cycleDuration >
       maxCycleCapacityStepTwo
         ? maxCycleCapacityStepTwo
         : patientInputPerCycleEj *
             state.hoitoonohjaus.hoitoonohjausSteppedCare *
             calculateHoitoonohjausStepTwo(state) +
-          patientInputPerCycleStepOne *
-            state.stepOne.stepOneToStepTwoRate *
-            cycleDuration;
+          patientReReferralsPerMonthStepOneToStepTwo * cycleDuration;
+
+    // Re-referral rates from step two
+    const patientReReferralsPerMonthStepTwo =
+      (patientInputPerCycleStepTwo * insufficencyRateStepTwo) / cycleDuration;
+    const patientReReferralsPerMonthStepTwoToMuu =
+      patientReReferralsPerMonthStepTwo * state.stepTwo.stepTwoToMuuRate;
+    const patientFlowPerMonthStepTwoToQueue =
+      patientReReferralsPerMonthStepTwo * stepTwoToQueueRate;
+
     // Patient input to Muu
     // Calculated based on the patient input to Ensijäsennys and the referral rate to Muu
-    const patientInputMuu =
+    const patientInputPerCycleMuu =
       patientInputPerCycleEj * calculateHoitoonohjausMuu(state) +
-      (patientInputPerCycleStepOne * state.stepOne.stepOneToMuuRate +
-        patientInputStepTwo * state.stepTwo.stepTwoToMuuRate +
-        patientInputPerCycleTau * state.tau.tauToMuuRate) *
+      (patientReReferralsPerMonthTauToMuu +
+        patientReReferralsPerMonthStepOneToMuu +
+        patientReReferralsPerMonthStepTwoToMuu) *
         cycleDuration;
+
+    // Patient flow from Muu to queue
+    const patientFlowPerMonthMuuToQueue =
+      (patientInputPerCycleMuu * insufficencyRateMuu) / cycleDuration;
 
     // Capacity utilization rate for each treatment
     const capacityUtilizationRateEj =
@@ -175,9 +194,10 @@ export const calculateSimulationBalance = createAsyncThunk(
     const capacityUtilizationRateStepOne =
       (patientInputPerCycleStepOne / maxCycleCapacityStepOne) * 100;
     const capacityUtilizationRateStepTwo =
-      (patientInputStepTwo / maxCycleCapacityStepTwo) * 100;
+      (patientInputPerCycleStepTwo / maxCycleCapacityStepTwo) * 100;
 
     // Define capacity status for each treatment (0 = Ei potilaita ohjattuna tänne, 1 = Resurssit riittävät, 2 = Resurssit eivät riitä)
+    // ATTN! This should probably be stored in global store, but for now it's here for simplicity
     const capacityStatusEj =
       capacityUtilizationRateEj > 100
         ? 2
