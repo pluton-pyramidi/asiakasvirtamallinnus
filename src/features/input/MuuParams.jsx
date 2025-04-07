@@ -4,13 +4,16 @@ import { useSelector, useDispatch } from "react-redux";
 import NumberInput from "../../components/NumberInput";
 import PercentageInput from "../../components/PercentageInput";
 import { Box, Button, Typography } from "@mui/material";
-import { setMuu } from "./muuSlice";
+import { setMuu, calculateInsufficencyRateMuu } from "./muuSlice";
 
 // This feature renders the set of input fields and submit button for inputting/changing the Muu parameter variables in the Muu state slice
 export default function MuuParams() {
   const muu = useSelector((state) => state.muu);
   const dispatch = useDispatch();
   const [input, setInput] = useState(muu);
+
+  const insufficiencyRateMuu = useSelector(calculateInsufficencyRateMuu);
+  const muuToQueueRate = insufficiencyRateMuu;
 
   // handleInputChange manages the local state ("input") visible in the input fields.
   const handleInputChange = (field, value) => {
@@ -29,12 +32,16 @@ export default function MuuParams() {
   return (
     <Box>
       <PercentageInput
-        label="Muu: Asiakas palaa suoraan takaisin jonoon per kuukausi (loput poistuvat jonosta)"
-        value={input.muuToQueueRate}
+        label="Muu: Hoito riittävää (ei jatkohoidon tarvetta):"
+        value={input.sufficiencyRateMuu}
         handleChange={(e) =>
-          handleInputChange("muuToQueueRate", Number(e.target.value))
+          handleInputChange("sufficiencyRateMuu", Number(e.target.value))
         }
       />
+      <Typography>
+        Asiakas palaa suoraan takaisin jonoon per kuukausi:{" "}
+        {Math.round(muuToQueueRate * 100)} %
+      </Typography>
       <Button onClick={handleSubmit}>Submit</Button>
     </Box>
   );
