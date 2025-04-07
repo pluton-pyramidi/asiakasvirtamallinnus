@@ -3,16 +3,16 @@ import {
   calculateHoitoonohjausStepTwo,
   calculateInsufficencyRateStepOne,
   calculateStepOneToQueueRate,
-} from "./stepOneSlice";
+} from "../input/stepOneSlice";
 import {
   calculateInsufficencyRateStepTwo,
   calculateStepTwoToQueueRate,
-} from "./stepTwoSlice";
+} from "../input/stepTwoSlice";
 import {
   calculateInsufficencyRateTau,
   calculateTauToQueueRate,
-} from "./tauSlice";
-import { calculateHoitoonohjausMuu } from "./hoitoonohjausSlice";
+} from "../input/tauSlice";
+import { calculateHoitoonohjausMuu } from "../input/hoitoonohjausSlice";
 import { calculateInsufficencyRateMuu } from "../input/muuSlice";
 
 // Thunk to calculate the simulation balance and return the result array for the graph
@@ -296,39 +296,186 @@ export const calculateSimulationBalance = createAsyncThunk(
     // First month begins with the initial queue value and the first month's balance
     // (i.e. initial queue + first month's balance)
     // Subsequent months are calculated based on the previous month's balance
-    const simulatedQueueArray = Array.from(
-      { length: simulationDuration },
-      (_, i) => {
-        if (i === 0) {
-          return state.patientInput.initialQueue + balanceArray[i]; // First month balance
-        } else {
-          return (
-            simulatedQueueArray[i - 1] + balanceArray[i] // Subsequent months balance
-          );
-        }
+    const simulatedQueueArray = [];
+    for (let i = 0; i < simulationDuration; i++) {
+      if (i === 0) {
+        // First month balance
+        simulatedQueueArray[i] =
+          state.patientInput.initialQueue + balanceArray[i];
+      } else {
+        // Subsequent months balance
+        simulatedQueueArray[i] = simulatedQueueArray[i - 1] + balanceArray[i];
       }
-    );
+    }
+    // Results table for visual inspection of the simulation internal logic
+    const resultsTable = [
+      { name: "Working Hours Daily", value: workingHoursDaily },
+      { name: "Cycle Duration (months)", value: cycleDuration },
+      { name: "Simulation Duration (months)", value: simulationDuration },
+
+      // Treatment Hours Per Week
+      {
+        name: "Treatment Hours Per Week (Ensijäsennys)",
+        value: treatmentHoursPerWeekEj,
+      },
+      {
+        name: "Treatment Hours Per Week (TAU)",
+        value: treatmentHoursPerWeekTau,
+      },
+      {
+        name: "Treatment Hours Per Week (Step One)",
+        value: treatmentHoursPerWeekStepOne,
+      },
+      {
+        name: "Treatment Hours Per Week (Step Two)",
+        value: treatmentHoursPerWeekStepTwo,
+      },
+
+      // Appointments Per Week
+      {
+        name: "Appointments Per Week (Ensijäsennys)",
+        value: appointmentsPerWeekEj,
+      },
+      { name: "Appointments Per Week (TAU)", value: appointmentsPerWeekTau },
+      {
+        name: "Appointments Per Week (Step One)",
+        value: appointmentsPerWeekStepOne,
+      },
+      {
+        name: "Appointments Per Week (Step Two)",
+        value: appointmentsPerWeekStepTwo,
+      },
+
+      // Max Weekly Capacity
+      {
+        name: "Max Weekly Capacity (Ensijäsennys)",
+        value: maxWeeklyCapacityEj,
+      },
+      { name: "Max Weekly Capacity (TAU)", value: maxWeeklyCapacityTau },
+      {
+        name: "Max Weekly Capacity (Step One)",
+        value: maxWeeklyCapacityStepOne,
+      },
+      {
+        name: "Max Weekly Capacity (Step Two)",
+        value: maxWeeklyCapacityStepTwo,
+      },
+
+      // Max Cycle Capacity
+      { name: "Max Cycle Capacity (Ensijäsennys)", value: maxCycleCapacityEj },
+      { name: "Max Cycle Capacity (TAU)", value: maxCycleCapacityTau },
+      { name: "Max Cycle Capacity (Step One)", value: maxCycleCapacityStepOne },
+      { name: "Max Cycle Capacity (Step Two)", value: maxCycleCapacityStepTwo },
+
+      // Insufficiency Rates
+      { name: "Insufficiency Rate (TAU)", value: insufficencyRateTau },
+      { name: "Insufficiency Rate (Step One)", value: insufficencyRateStepOne },
+      { name: "Insufficiency Rate (Step Two)", value: insufficencyRateStepTwo },
+      {
+        name: "Insufficiency Rate (Ensijäsennys)",
+        value: state.ensijasennys.insufficencyRateEnsijäsennys,
+      },
+      {
+        name: "Insufficiency Rate (Muu)",
+        value: state.muu.insufficencyRateMuu,
+      },
+
+      // Patients Returning to Queue
+      {
+        name: "Patients Returning to Queue (TAU)",
+        value: patientFlowPerMonthTauToQueue,
+      },
+      {
+        name: "Patients Returning to Queue (Step One)",
+        value: patientFlowPerMonthStepOneToQueue,
+      },
+      {
+        name: "Patients Returning to Queue (Step Two)",
+        value: patientFlowPerMonthStepTwoToQueue,
+      },
+      {
+        name: "Patients Returning to Queue (Muu)",
+        value: patientFlowPerMonthMuuToQueue,
+      },
+      {
+        name: "Patients Returning to Queue (Ensijäsennys)",
+        value: patientFlowPerMonthStepOneToQueue,
+      },
+
+      // Patient Input Per Cycle
+      {
+        name: "Patient Input Per Cycle (Ensijäsennys)",
+        value: patientInputPerCycleEj,
+      },
+      { name: "Patient Input Per Cycle (TAU)", value: patientInputPerCycleTau },
+      {
+        name: "Patient Input Per Cycle (Step One)",
+        value: patientInputPerCycleStepOne,
+      },
+      {
+        name: "Patient Input Per Cycle (Step Two)",
+        value: patientInputPerCycleStepTwo,
+      },
+      { name: "Patient Input Per Cycle (Muu)", value: patientInputPerCycleMuu },
+
+      // Capacity Utilization Rates
+      {
+        name: "Capacity Utilization Rate (Ensijäsennys)",
+        value: capacityUtilizationRateEj,
+      },
+      {
+        name: "Capacity Utilization Rate (TAU)",
+        value: capacityUtilizationRateTau,
+      },
+      {
+        name: "Capacity Utilization Rate (Step One)",
+        value: capacityUtilizationRateStepOne,
+      },
+      {
+        name: "Capacity Utilization Rate (Step Two)",
+        value: capacityUtilizationRateStepTwo,
+      },
+      {
+        name: "Capacity Utilization Rate (Muu)",
+        value: capacityUtilizationRateEj,
+      },
+
+      // Capacity Status
+      { name: "Capacity Status (Ensijäsennys)", value: capacityStatusEj },
+      { name: "Capacity Status (TAU)", value: capacityStatusTau },
+      { name: "Capacity Status (Step One)", value: capacityStatusStepOne },
+      { name: "Capacity Status (Step Two)", value: capacityStatusStepTwo },
+      { name: "Capacity Status (Muu)", value: capacityStatusEj },
+    ];
 
     // Return the final simulation product array
     // This array is used to render the simulation graph in the UI
-    return simulatedQueueArray;
+    return { simulatedQueueArray, resultsTable };
   }
 );
 
+// Slice to manage the simulation balance state
 const balanceSlice = createSlice({
   name: "balance",
   initialState: {
-    value: 0,
-    status: "idle",
+    value: [], // Stores the simulated queue array
+    resultsTable: [], // Stores the results table
+    status: "idle", // Tracks the status of the thunk (loading, idle, etc.)
   },
-  extraReducers: {
-    [calculateSimulationBalance.pending]: (state) => {
-      state.status = "loading";
-    },
-    [calculateSimulationBalance.fulfilled]: (state, action) => {
-      state.status = "idle";
-      state.value = action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(calculateSimulationBalance.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(calculateSimulationBalance.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.value = action.payload.simulatedQueueArray; // Store the simulated queue array
+        state.resultsTable = action.payload.resultsTable; // Store the results table
+      })
+      .addCase(calculateSimulationBalance.rejected, (state) => {
+        state.status = "error";
+      });
   },
 });
 

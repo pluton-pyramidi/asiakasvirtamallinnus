@@ -6,9 +6,9 @@ import { Box, Button } from "@mui/material";
 import { setPatientInput } from "./patientInputSlice";
 
 export default function Start() {
-  const start = useSelector((state) => state.start);
+  const patientInput = useSelector((state) => state.patientInput);
   const dispatch = useDispatch();
-  const [input, setInput] = useState(start);
+  const [input, setInput] = useState(patientInput);
 
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
