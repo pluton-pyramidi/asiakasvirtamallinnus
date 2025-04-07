@@ -60,14 +60,14 @@ export default function StepOneParams() {
   return (
     <Box>
       <PercentageInput
-        label="Hoito riittävää (ei jatkohoidon tarvetta) per kuukausi"
+        label="Hoito riittävää (ei jatkohoidon tarvetta):"
         value={input.sufficiencyRateStepOne}
         handleChange={(e) =>
           handleInputChange("sufficiencyRateStepOne", Number(e.target.value))
         }
       />
       <Typography>
-        Hoito ei riitä (jatkohoidon tarve) per kuukausi:{" "}
+        Hoito ei riitä (jatkohoidon tarve):{" "}
         {Math.round(insufficiencyRateStepOne * 100)} %
       </Typography>
       <PercentageInput

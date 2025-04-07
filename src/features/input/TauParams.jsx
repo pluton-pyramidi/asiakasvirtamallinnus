@@ -34,14 +34,14 @@ export default function TauParams() {
   return (
     <Box>
       <PercentageInput
-        label="Hoito riittävää (ei jatkohoidon tarvetta) per kuukausi"
+        label="Hoito riittävää (ei jatkohoidon tarvetta):"
         value={input.sufficiencyRateTau}
         handleChange={(e) =>
           handleInputChange("sufficiencyRateTau", Number(e.target.value))
         }
       />
       <Typography>
-        Hoito ei riitä (jatkohoidon tarve) per kuukausi:{" "}
+        Hoito ei riitä (jatkohoidon tarve):{" "}
         {Math.round(insufficiencyRateTau * 100)} %
       </Typography>
       <PercentageInput
