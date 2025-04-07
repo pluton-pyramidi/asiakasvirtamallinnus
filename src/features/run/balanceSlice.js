@@ -67,13 +67,12 @@ export const calculateSimulationBalance = createAsyncThunk(
     // Unit maximum capacity for each treatment per week
     // aka. the number of appointments that current staff can do in a week
     const maxWeeklyCapacityEj =
-      state.ensijasennys.laborStepOne * appointmentsPerWeekEj;
-    const maxWeeklyCapacityTau =
-      state.tau.laborStepOne * appointmentsPerWeekTau;
+      state.ensijasennys.laborEnsijasennys * appointmentsPerWeekEj;
+    const maxWeeklyCapacityTau = state.tau.laborTau * appointmentsPerWeekTau;
     const maxWeeklyCapacityStepOne =
       state.stepOne.laborStepOne * appointmentsPerWeekStepOne;
     const maxWeeklyCapacityStepTwo =
-      state.stepTwo.laborStepOne * appointmentsPerWeekStepTwo;
+      state.stepTwo.laborStepTwo * appointmentsPerWeekStepTwo;
 
     // Unit maximum capacity for each treatment per cycle
     // aka. the number of appointments that current staff can do in one cycle
@@ -135,12 +134,12 @@ export const calculateSimulationBalance = createAsyncThunk(
     const patientInputPerCycleStepOne =
       patientInputPerCycleEj *
         state.hoitoonohjaus.hoitoonohjausSteppedCare *
-        state.stepOne.hoitoonohjaus >
+        state.stepOne.hoitoonohjausStepOne >
       maxCycleCapacityStepOne
         ? maxCycleCapacityStepOne
         : patientInputPerCycleEj *
           state.hoitoonohjaus.hoitoonohjausSteppedCare *
-          state.stepOne.hoitoonohjaus;
+          state.stepOne.hoitoonohjausStepOne;
 
     // Re-referral rates from step one
     const patientReReferralsPerMonthStepOne =
@@ -300,14 +299,20 @@ export const calculateSimulationBalance = createAsyncThunk(
     for (let i = 0; i < simulationDuration; i++) {
       if (i === 0) {
         // First month balance
-        simulatedQueueArray[i] =
-          state.patientInput.initialQueue + balanceArray[i];
+        simulatedQueueArray[i] = Math.max(
+          0,
+          Math.round(state.patientInput.initialQueue + balanceArray[i])
+        );
       } else {
         // Subsequent months balance
-        simulatedQueueArray[i] = simulatedQueueArray[i - 1] + balanceArray[i];
+        simulatedQueueArray[i] = Math.max(
+          0,
+          Math.round(simulatedQueueArray[i - 1] + balanceArray[i])
+        );
       }
     }
-    // Results table for visual inspection of the simulation internal logic
+
+    // Results table for visual debugging/inspection of the simulation internal logic
     const resultsTable = [
       { name: "Working Hours Daily", value: workingHoursDaily },
       { name: "Cycle Duration (months)", value: cycleDuration },
@@ -372,12 +377,8 @@ export const calculateSimulationBalance = createAsyncThunk(
       { name: "Insufficiency Rate (Step One)", value: insufficencyRateStepOne },
       { name: "Insufficiency Rate (Step Two)", value: insufficencyRateStepTwo },
       {
-        name: "Insufficiency Rate (Ensijäsennys)",
-        value: state.ensijasennys.insufficencyRateEnsijäsennys,
-      },
-      {
         name: "Insufficiency Rate (Muu)",
-        value: state.muu.insufficencyRateMuu,
+        value: insufficencyRateMuu,
       },
 
       // Patients Returning to Queue
@@ -396,10 +397,6 @@ export const calculateSimulationBalance = createAsyncThunk(
       {
         name: "Patients Returning to Queue (Muu)",
         value: patientFlowPerMonthMuuToQueue,
-      },
-      {
-        name: "Patients Returning to Queue (Ensijäsennys)",
-        value: patientFlowPerMonthStepOneToQueue,
       },
 
       // Patient Input Per Cycle
