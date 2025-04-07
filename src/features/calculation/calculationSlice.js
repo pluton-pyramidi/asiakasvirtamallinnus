@@ -24,6 +24,7 @@ export const calculateSimulationBalance = createAsyncThunk(
     // These numbers I might have to move to global store and let the user define them
     const workingHoursDaily = 7.5; // Assumed daily working hours
     const cycleDuration = 6; // Simulation time cycle (months)
+    const simulationDuration = 24; // Simulation duration (months)
     const treatmentDurationTau = 6; // Treatment duration for TAU (months)
     const treatmentDurationStepOne = 1; // Treatment duration for step one (months)
     const treatmentDurationStepTwo = 3; // Treatment duration for step two (months)
@@ -197,7 +198,7 @@ export const calculateSimulationBalance = createAsyncThunk(
       (patientInputPerCycleStepTwo / maxCycleCapacityStepTwo) * 100;
 
     // Define capacity status for each treatment (0 = Ei potilaita ohjattuna tänne, 1 = Resurssit riittävät, 2 = Resurssit eivät riitä)
-    // ATTN! This should probably be stored in global store, but for now it's here for simplicity
+    // ATTN! This should probably be stored in global store, but for now it's here until I get the simulation up and running
     const capacityStatusEj =
       capacityUtilizationRateEj > 100
         ? 2
@@ -223,8 +224,94 @@ export const calculateSimulationBalance = createAsyncThunk(
         ? 0
         : 1;
 
-    const balance = 0;
-    return balance;
+    // ---------------------------------------
+    // Simulation balance
+    // ---------------------------------------
+
+    // Time array
+    const timeArray = Array.from(
+      { length: simulationDuration },
+      (_, i) => i + 1
+    );
+
+    //// Monthly balance IN
+    // Patients returning to queue (an array with the sum of all patients returning to queue from each treatment)
+    const balanceInPatientsJoiningQueue = timeArray.map((_, i) => {
+      // New patients joining queue each month
+      const newPatientsJoiningQueue =
+        state.patientInput.newPatientsPerMonth * (i + 1);
+      // Patients returning from TAU to queue
+      const patientsReturningFromTau = patientFlowPerMonthTauToQueue * (i + 1);
+      // Patients returning from step one to queue
+      const patientsReturningFromStepOne =
+        patientFlowPerMonthStepOneToQueue * (i + 1);
+      // Patients returning from step two to queue
+      const patientsReturningFromStepTwo =
+        patientFlowPerMonthStepTwoToQueue * (i + 1);
+      // Patients returning from Muu to queue
+      const patientsReturningFromMuu = patientFlowPerMonthMuuToQueue * (i + 1);
+
+      return (
+        newPatientsJoiningQueue +
+        patientsReturningFromTau +
+        patientsReturningFromStepOne +
+        patientsReturningFromStepTwo +
+        patientsReturningFromMuu
+      );
+    });
+
+    //// Monthly balance OUT
+    // Patients leaving the queue (an array with the sum of all patients leaving the queue from each treatment)
+    // Key assumption: Patients leave queue when they enter treatment
+    const balanceOutPatientsLeavingQueue = timeArray.map((_, i) => {
+      // Patients leaving from TAU
+      const patientsLeavingFromTau =
+        (patientInputPerCycleTau / cycleDuration) * (i + 1);
+      // Patients leaving from step one
+      const patientsLeavingFromStepOne =
+        (patientInputPerCycleStepOne / cycleDuration) * (i + 1);
+      // Patients leaving from step two
+      const patientsLeavingFromStepTwo =
+        (patientInputPerCycleStepTwo / cycleDuration) * (i + 1);
+      // Patients leaving from Muu
+      const patientsLeavingFromMuu =
+        (patientInputPerCycleMuu / cycleDuration) * (i + 1);
+
+      return (
+        patientsLeavingFromTau +
+        patientsLeavingFromStepOne +
+        patientsLeavingFromStepTwo +
+        patientsLeavingFromMuu
+      );
+    });
+
+    // Monthly balance array
+    const balanceArray = timeArray.map((_, i) => {
+      const patientsJoining = balanceInPatientsJoiningQueue[i];
+      const patientsLeaving = balanceOutPatientsLeavingQueue[i];
+      return patientsJoining - patientsLeaving; // Net balance for each month
+    });
+
+    // The final product: simulated queue array
+    // First month begins with the initial queue value and the first month's balance
+    // (i.e. initial queue + first month's balance)
+    // Subsequent months are calculated based on the previous month's balance
+    const simulatedQueueArray = Array.from(
+      { length: simulationDuration },
+      (_, i) => {
+        if (i === 0) {
+          return state.patientInput.initialQueue + balanceArray[i]; // First month balance
+        } else {
+          return (
+            simulatedQueueArray[i - 1] + balanceArray[i] // Subsequent months balance
+          );
+        }
+      }
+    );
+
+    // Return the final simulation product array
+    // This array is used to render the simulation graph in the UI
+    return simulatedQueueArray;
   }
 );
 
