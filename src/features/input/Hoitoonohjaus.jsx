@@ -20,26 +20,26 @@ export default function Hoitoonohjaus() {
     setInput((prevInput) => {
       const newInput = { ...prevInput, [field]: value };
       const total =
-        newInput.hoitoonohjausTAU + newInput.hoitoonohjausSteppedCare;
+        newInput.hoitoonohjausTau + newInput.hoitoonohjausSteppedCare;
 
       if (total > 1) {
         const excess = total - 1;
-        if (field === "hoitoonohjausTAU") {
+        if (field === "hoitoonohjausTau") {
           newInput.hoitoonohjausSteppedCare = Math.max(
             0,
             newInput.hoitoonohjausSteppedCare - excess
           );
         } else {
-          newInput.hoitoonohjausTAU = Math.max(
+          newInput.hoitoonohjausTau = Math.max(
             0,
-            newInput.hoitoonohjausTAU - excess
+            newInput.hoitoonohjausTau - excess
           );
         }
       }
 
       // Round the values to two decimal places
-      newInput.hoitoonohjausTAU =
-        Math.round(newInput.hoitoonohjausTAU * 100) / 100;
+      newInput.hoitoonohjausTau =
+        Math.round(newInput.hoitoonohjausTau * 100) / 100;
       newInput.hoitoonohjausSteppedCare =
         Math.round(newInput.hoitoonohjausSteppedCare * 100) / 100;
 
@@ -57,9 +57,9 @@ export default function Hoitoonohjaus() {
     <Box>
       <PercentageInput
         label="TAU %"
-        value={input.hoitoonohjausTAU}
+        value={input.hoitoonohjausTau}
         handleChange={(e) =>
-          handleInputChange("hoitoonohjausTAU", Number(e.target.value))
+          handleInputChange("hoitoonohjausTau", Number(e.target.value))
         }
       />
       <PercentageInput
