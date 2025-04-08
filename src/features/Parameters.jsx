@@ -8,6 +8,7 @@ import TauParams from "./input/TauParams";
 import StepOneParams from "./input/StepOneParams";
 import StepTwoParams from "./input/StepTwoParams";
 import MuuParams from "./input/MuuParams";
+import SimulationParams from "./input/SimulationParams";
 
 // Parameters.jsx component houses the input fields for each set of parameters values, based on which view state is active
 export default function Parameters() {
@@ -16,7 +17,7 @@ export default function Parameters() {
   return (
     <Box sx={BoxSx}>
       <Typography>Oletukset ja parametrit</Typography>
-      {currentView === "patientInput" && <Box>Alkutilanne</Box>}
+      {currentView === "patientInput" && <SimulationParams></SimulationParams>}
       {currentView === "ensijasennys" && (
         <Box>
           Ensijäsennys <EnsijasennysParams></EnsijasennysParams>

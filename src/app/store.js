@@ -7,6 +7,7 @@ import tauReducer from "../features/input/tauSlice";
 import stepOneReducer from "../features/input/stepOneSlice";
 import stepTwoReducer from "../features/input/stepTwoSlice";
 import muuReducer from "../features/input/muuSlice";
+import simulationParamsReducer from "../features/input/simulationParamsSlice";
 import balanceReducer from "../features/run/balanceSlice";
 
 export default configureStore({
@@ -19,6 +20,7 @@ export default configureStore({
     stepOne: stepOneReducer,
     stepTwo: stepTwoReducer,
     muu: muuReducer,
+    simulationParams: simulationParamsReducer,
     balance: balanceReducer,
   },
 });

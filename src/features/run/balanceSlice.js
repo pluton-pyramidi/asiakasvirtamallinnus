@@ -21,17 +21,19 @@ export const calculateSimulationBalance = createAsyncThunk(
   async (_, { getState }) => {
     const state = getState();
 
-    // These numbers I might have to move to global store and let the user define them
-    const workingHoursDaily = 7.5; // Assumed daily working hours
-    const cycleDuration = 6; // Simulation time cycle (months)
-    const simulationDuration = 24; // Simulation duration (months)
-    const treatmentDurationTau = 6; // Treatment duration for TAU (months)
-    const treatmentDurationStepOne = 1; // Treatment duration for step one (months)
-    const treatmentDurationStepTwo = 3; // Treatment duration for step two (months)
-
     // ---------------------------------------
     // Simulation parameters
     // ---------------------------------------
+
+    // Get predefined simulation parameters from the state
+    const workingHoursDaily = state.simulationParams.workingHoursDaily; // Assumed daily working hours
+    const cycleDuration = state.simulationParams.cycleDuration; // Simulation time cycle (months)
+    const simulationTimeSpan = state.simulationParams.simulationTimeSpan; // Simulation duration (months)
+    const treatmentDurationTau = state.simulationParams.treatmentDurationTau; // Treatment duration for TAU (months)
+    const treatmentDurationStepOne =
+      state.simulationParams.treatmentDurationStepOne; // Treatment duration for step one (months)
+    const treatmentDurationStepTwo =
+      state.simulationParams.treatmentDurationStepTwo; // Treatment duration for step two (months)
 
     // How many hours each professional is assigned to produce this treatment per week
     const treatmentHoursPerWeekEj =
@@ -229,7 +231,7 @@ export const calculateSimulationBalance = createAsyncThunk(
 
     // Time array
     const timeArray = Array.from(
-      { length: simulationDuration },
+      { length: simulationTimeSpan },
       (_, i) => i + 1
     );
 
@@ -296,7 +298,7 @@ export const calculateSimulationBalance = createAsyncThunk(
     // (i.e. initial queue + first month's balance)
     // Subsequent months are calculated based on the previous month's balance
     const simulatedQueueArray = [];
-    for (let i = 0; i < simulationDuration; i++) {
+    for (let i = 0; i < simulationTimeSpan; i++) {
       if (i === 0) {
         // First month balance
         simulatedQueueArray[i] = Math.max(
@@ -316,7 +318,7 @@ export const calculateSimulationBalance = createAsyncThunk(
     const resultsTable = [
       { name: "Working Hours Daily", value: workingHoursDaily },
       { name: "Cycle Duration (months)", value: cycleDuration },
-      { name: "Simulation Duration (months)", value: simulationDuration },
+      { name: "Simulation Duration (months)", value: simulationTimeSpan },
 
       // Treatment Hours Per Week
       {
