@@ -5,17 +5,18 @@ import NumberInput from "../../components/NumberInput";
 import PercentageInput from "../../components/PercentageInput";
 import { Box, Button, Typography } from "@mui/material";
 import { setMuu, calculateInsufficencyRateMuu } from "./muuSlice";
+import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
 
 // This feature renders the set of input fields and submit button for inputting/changing the Muu parameter variables in the Muu state slice
 export default function MuuParams() {
   const muu = useSelector((state) => state.muu);
   const dispatch = useDispatch();
   const [input, setInput] = useState(muu);
-
+  const setAction = setMuu;
   const insufficiencyRateMuu = useSelector(calculateInsufficencyRateMuu);
   const muuToQueueRate = insufficiencyRateMuu;
 
-  // handleInputChange manages the local state ("input") visible in the input fields.
+  // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
       ...prevInput,
@@ -23,11 +24,9 @@ export default function MuuParams() {
     }));
   };
 
-  // handleSubmit on the other hand manages the dispatch of the local state values to the Redux store
-  const handleSubmit = () => {
-    console.log("Dispatching input state:", input);
-    dispatch(setMuu(input));
-  };
+  // Submit the local input to global store and run the simulation
+  // This function is imported from utils
+  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
 
   return (
     <Box>

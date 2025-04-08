@@ -5,12 +5,15 @@ import NumberInput from "../../components/NumberInput";
 import PercentageInput from "../../components/PercentageInput";
 import { Box, Button } from "@mui/material";
 import { setEnsijasennys } from "./ensijasennysSlice";
+import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
 
 export default function Ensijasennys() {
   const ensijasennys = useSelector((state) => state.ensijasennys);
   const dispatch = useDispatch();
   const [input, setInput] = useState(ensijasennys);
+  const setAction = setEnsijasennys;
 
+  // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
       ...prevInput,
@@ -18,10 +21,9 @@ export default function Ensijasennys() {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log("Dispatching input state:", input);
-    dispatch(setEnsijasennys(input));
-  };
+  // Submit the local input to global store and run the simulation
+  // This function is imported from utils
+  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
 
   return (
     <Box>

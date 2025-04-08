@@ -9,6 +9,7 @@ import {
   calculateInsufficencyRateStepTwo,
   calculateStepTwoToQueueRate,
 } from "./stepTwoSlice";
+import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
 
 // This feature renders the set of input fields and submit button for inputting/changing the StepTwo parameter variables in the StepTwo state slice
 export default function StepTwoParams() {
@@ -19,8 +20,9 @@ export default function StepTwoParams() {
   const stepTwoToQueueRate = useSelector(calculateStepTwoToQueueRate);
   const dispatch = useDispatch();
   const [input, setInput] = useState(stepTwo);
+  const setAction = setStepTwo;
 
-  // handleInputChange manages the local state ("input") visible in the input fields.
+  // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
       ...prevInput,
@@ -28,11 +30,9 @@ export default function StepTwoParams() {
     }));
   };
 
-  // handleSubmit on the other hand manages the dispatch of the local state values to the Redux store
-  const handleSubmit = () => {
-    console.log("Dispatching input state:", input);
-    dispatch(setStepTwo(input));
-  };
+  // Submit the local input to global store and run the simulation
+  // This function is imported from utils
+  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
 
   return (
     <Box>

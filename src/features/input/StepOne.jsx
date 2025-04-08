@@ -5,24 +5,26 @@ import NumberInput from "../../components/NumberInput";
 import PercentageInput from "../../components/PercentageInput";
 import { Box, Button } from "@mui/material";
 import { setStepOne } from "./stepOneSlice";
+import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
 
 // This feature renders the set of input fields and submit button for inputting/changing the StepOne labor variables in the StepOne state slice
 export default function StepOne() {
   const stepOne = useSelector((state) => state.stepOne);
   const dispatch = useDispatch();
   const [input, setInput] = useState(stepOne);
+  const setAction = setStepOne;
 
+  // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
       ...prevInput,
       [field]: value,
     }));
   };
-  // handleSubmit on the other hand manages the dispatch of the same state values to the Redux state store
-  const handleSubmit = () => {
-    console.log("Dispatching input state:", input);
-    dispatch(setStepOne(input));
-  };
+
+  // Submit the local input to global store and run the simulation
+  // This function is imported from utils
+  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
 
   return (
     <Box>

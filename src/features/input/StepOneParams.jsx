@@ -9,6 +9,7 @@ import {
   calculateInsufficencyRateStepOne,
   calculateStepOneToQueueRate,
 } from "./stepOneSlice";
+import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
 
 // This feature renders the set of input fields and submit button for inputting/changing the StepOne parameter variables in the StepOne state slice
 export default function StepOneParams() {
@@ -19,6 +20,7 @@ export default function StepOneParams() {
   const stepOneToQueueRate = useSelector(calculateStepOneToQueueRate);
   const dispatch = useDispatch();
   const [input, setInput] = useState(stepOne);
+  const setAction = setStepOne;
 
   // handleInputChange manages the local state ("input") visible in the input fields.
   // It also enforces data validation so that the total input does not exceed 100 %.
@@ -51,11 +53,10 @@ export default function StepOneParams() {
       return newInput;
     });
   };
-  // handleSubmit on the other hand manages the dispatch of the same state values to the Redux state store
-  const handleSubmit = () => {
-    console.log("Dispatching input state:", input);
-    dispatch(setStepOne(input));
-  };
+
+  // Submit the local input to global store and run the simulation
+  // This function is imported from utils
+  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
 
   return (
     <Box>

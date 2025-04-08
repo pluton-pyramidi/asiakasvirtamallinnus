@@ -4,12 +4,15 @@ import { useSelector, useDispatch } from "react-redux";
 import NumberInput from "../../components/NumberInput";
 import { Box, Button } from "@mui/material";
 import { setPatientInput } from "./patientInputSlice";
+import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
 
-export default function Start() {
+export default function PatientInput() {
   const patientInput = useSelector((state) => state.patientInput);
   const dispatch = useDispatch();
   const [input, setInput] = useState(patientInput);
+  const setAction = setPatientInput;
 
+  // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
       ...prevInput,
@@ -17,11 +20,9 @@ export default function Start() {
     }));
   };
 
-  // handleSubmit on the other hand manages the dispatch of the same state values to the Redux state store
-  const handleSubmit = () => {
-    console.log("Dispatching input state:", input);
-    dispatch(setPatientInput(input));
-  };
+  // Submit the local input to global store and run the simulation
+  // This function is imported from utils
+  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
 
   return (
     <Box>

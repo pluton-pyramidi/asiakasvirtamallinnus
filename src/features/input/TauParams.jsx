@@ -9,6 +9,7 @@ import {
   calculateInsufficencyRateTau,
   calculateTauToQueueRate,
 } from "./tauSlice";
+import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
 
 // This feature renders the set of input fields and submit button for inputting/changing the TAU parameter variables in the TAU state slice
 export default function TauParams() {
@@ -17,8 +18,9 @@ export default function TauParams() {
   const tauToQueueRate = useSelector(calculateTauToQueueRate);
   const dispatch = useDispatch();
   const [input, setInput] = useState(tau);
+  const setAction = setTau;
 
-  // handleInputChange manages the local state ("input") visible in the input fields.
+  // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
       ...prevInput,
@@ -26,10 +28,9 @@ export default function TauParams() {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log("Dispatching input state:", input);
-    dispatch(setTau(input));
-  };
+  // Submit the local input to global store and run the simulation
+  // This function is imported from utils
+  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
 
   return (
     <Box>

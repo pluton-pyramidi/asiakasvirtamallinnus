@@ -7,12 +7,14 @@ import {
   calculateHoitoonohjausMuu,
   setHoitoonohjaus,
 } from "./hoitoonohjausSlice";
+import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
 
 export default function Hoitoonohjaus() {
   const hoitoonohjaus = useSelector((state) => state.hoitoonohjaus);
   const hoitoonohjausMuu = useSelector(calculateHoitoonohjausMuu);
   const dispatch = useDispatch();
   const [input, setInput] = useState(hoitoonohjaus);
+  const setAction = setHoitoonohjaus;
 
   // handleInputChange manages the local state ("input") visible in the input fields.
   // It also enforces data validation so that the total input does not exceed 100 %.
@@ -47,11 +49,9 @@ export default function Hoitoonohjaus() {
     });
   };
 
-  // handleSubmit on the other hand manages the dispatch of the same state values to the Redux state store
-  const handleSubmit = () => {
-    console.log("Dispatching input state:", input);
-    dispatch(setHoitoonohjaus(input));
-  };
+  // Submit the local input to global store and run the simulation
+  // This function is imported from utils
+  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
 
   return (
     <Box>
