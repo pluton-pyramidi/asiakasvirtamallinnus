@@ -34,13 +34,16 @@ export default function SimulationParams() {
           handleInputChange("workingHoursDaily", Number(e.target.value))
         }
       />
-      <NumberInput
+      {/* This cycle variable doesnt work as expected. 
+      I need to figure out how this time cycle works in the model.
+      And whether it is even neccessary */}
+      {/*<NumberInput
         label="Mallinnuksen aikasykli (kk):"
         value={input.cycleDuration}
         handleChange={(e) =>
           handleInputChange("cycleDuration", Number(e.target.value))
         }
-      />
+      />*/}
       <NumberInput
         label="Mallinnettu ajanjakso (kk):"
         value={input.simulationTimeSpan}

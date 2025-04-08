@@ -6,12 +6,9 @@ import { LineChart } from "@mui/x-charts/LineChart";
 export default function QueueChart() {
   // Get the simulated queue data from store
   const simulatedQueueData = useSelector((state) => state.balance.value);
-
-  // Initialize x-axis by creating an array of the same length as the simulationTimeSpan
-  const simulationTimeSpan = useSelector(
-    (state) => state.simulationParams.simulationTimeSpan
-  );
-  const xAxis = Array.from({ length: simulationTimeSpan }, (_, i) => i + 1);
+  const dataLength = simulatedQueueData.length;
+  // Initialize x-axis by creating an array of the same length as the data
+  const xAxis = Array.from({ length: dataLength }, (_, i) => i + 1);
 
   return (
     <Box>
