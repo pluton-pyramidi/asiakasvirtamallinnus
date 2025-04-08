@@ -2,7 +2,6 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { BoxSx } from "../utils/ComponentSx";
-import LinePlot from "../components/LinePlot";
 
 export default function ResultsGraph() {
   return (
