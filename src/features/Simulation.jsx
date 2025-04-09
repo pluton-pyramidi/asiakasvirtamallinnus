@@ -24,10 +24,10 @@ export default function Simulation() {
       <Grid size={6}>
         <Parameters></Parameters>
       </Grid>
-      <Grid size={6}>
+      <Grid size={12}>
         <ResultsGraph></ResultsGraph>
       </Grid>
-      <Grid size={6}>
+      <Grid size={12}>
         <ResultsNumbers></ResultsNumbers>
       </Grid>
     </Grid>
