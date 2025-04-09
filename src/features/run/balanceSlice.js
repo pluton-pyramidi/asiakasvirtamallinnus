@@ -50,19 +50,19 @@ export const calculateSimulationBalance = createAsyncThunk(
     // How many appointments each professional has per treatment per week (rounded down)
     // Hours professional does treatment per week / (meeting avg duration in hours * labor efficiency-%)
     const appointmentsPerWeekEj = Math.floor(
-      treatmentHoursPerWeekEj /
-        ((state.ensijasennys.meetingDurationEnsijasennys / 60) * state.ensijasennys.laborEfficiencyEnsijasennys)
+      (treatmentHoursPerWeekEj / (state.ensijasennys.meetingDurationEnsijasennys / 60)) *
+        state.ensijasennys.laborEfficiencyEnsijasennys
     );
     const appointmentsPerWeekTau = Math.floor(
-      treatmentHoursPerWeekTau / ((state.tau.meetingDurationTau / 60) * state.tau.laborEfficiencyTau)
+      (treatmentHoursPerWeekTau / (state.tau.meetingDurationTau / 60)) * state.tau.laborEfficiencyTau
     );
     const appointmentsPerWeekStepOne = Math.floor(
-      treatmentHoursPerWeekStepOne /
-        ((state.stepOne.meetingDurationStepOne / 60) * state.stepOne.laborEfficiencyStepOne)
+      (treatmentHoursPerWeekStepOne / (state.stepOne.meetingDurationStepOne / 60)) *
+        state.stepOne.laborEfficiencyStepOne
     );
     const appointmentsPerWeekStepTwo = Math.floor(
-      treatmentHoursPerWeekStepTwo /
-        ((state.stepTwo.meetingDurationStepTwo / 60) * state.stepTwo.laborEfficiencyStepTwo)
+      (treatmentHoursPerWeekStepTwo / (state.stepTwo.meetingDurationStepTwo / 60)) *
+        state.stepTwo.laborEfficiencyStepTwo
     );
 
     // Unit maximum capacity for each treatment per week, aka. the number of patients that current staff can see in a week
