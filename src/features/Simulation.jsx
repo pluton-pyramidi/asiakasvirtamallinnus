@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Container } from "@mui/material";
+import { Grid } from "@mui/material";
 import Model from "./Model";
 import InputBlock from "./InputBlock";
 import Parameters from "./Parameters";
@@ -8,12 +8,28 @@ import ResultsNumbers from "./ResultsNumbers";
 
 export default function Simulation() {
   return (
-    <Container id="simulation-container">
-      <Model></Model>
-      <InputBlock></InputBlock>
-      <Parameters></Parameters>
-      <ResultsGraph></ResultsGraph>
-      <ResultsNumbers></ResultsNumbers>
-    </Container>
+    <Grid
+      container
+      spacing={2}
+      id="simulation-grid-container"
+      direction="row"
+      sx={{ justifyContent: "space-evenly", alignItems: "flex-start" }}
+    >
+      <Grid size={12}>
+        <Model></Model>
+      </Grid>
+      <Grid size={6}>
+        <InputBlock></InputBlock>
+      </Grid>
+      <Grid size={6}>
+        <Parameters></Parameters>
+      </Grid>
+      <Grid size={6}>
+        <ResultsGraph></ResultsGraph>
+      </Grid>
+      <Grid size={6}>
+        <ResultsNumbers></ResultsNumbers>
+      </Grid>
+    </Grid>
   );
 }

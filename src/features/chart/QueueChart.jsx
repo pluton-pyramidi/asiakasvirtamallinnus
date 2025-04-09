@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
+import { BoxSx } from "../../utils/ComponentSx";
 import { LineChart } from "@mui/x-charts/LineChart";
 
 export default function QueueChart() {

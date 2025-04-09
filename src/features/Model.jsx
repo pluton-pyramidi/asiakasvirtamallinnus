@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import { BoxSx } from "../utils/ComponentSx";
 import SelectViewButton from "./view/SelectViewButton";
 
@@ -7,24 +7,33 @@ import SelectViewButton from "./view/SelectViewButton";
 export default function Model() {
   return (
     <Box sx={BoxSx}>
-      <Typography>[Mallipuu tähän]</Typography>
+      <Grid container spacing={2} sx={{ justifyContent: "center" }}>
+        <Grid size={12}>
+          <Typography>[Mallipuu tähän]</Typography>
+        </Grid>
 
-      <SelectViewButton
-        viewName="Alkutilanne"
-        viewId="patientInput"
-      ></SelectViewButton>
-      <SelectViewButton
-        viewName="Ensijäsennys"
-        viewId="ensijasennys"
-      ></SelectViewButton>
-      <SelectViewButton
-        viewName="Hoitoonohjaus"
-        viewId="hoitoonohjaus"
-      ></SelectViewButton>
-      <SelectViewButton viewName="TAU" viewId="tau"></SelectViewButton>
-      <SelectViewButton viewName="P1" viewId="p1"></SelectViewButton>
-      <SelectViewButton viewName="P2" viewId="p2"></SelectViewButton>
-      <SelectViewButton viewName="Muu" viewId="muu"></SelectViewButton>
+        <Grid size={1.5}>
+          <SelectViewButton viewName="Alkutilanne" viewId="patientInput"></SelectViewButton>
+        </Grid>
+        <Grid size={1.5}>
+          <SelectViewButton viewName="Ensijäsennys" viewId="ensijasennys"></SelectViewButton>
+        </Grid>
+        <Grid size={1.5}>
+          <SelectViewButton viewName="Hoitoonohjaus" viewId="hoitoonohjaus"></SelectViewButton>
+        </Grid>
+        <Grid size={1.5}>
+          <SelectViewButton viewName="TAU" viewId="tau"></SelectViewButton>
+        </Grid>
+        <Grid size={1.5}>
+          <SelectViewButton viewName="P1" viewId="p1"></SelectViewButton>
+        </Grid>
+        <Grid size={1.5}>
+          <SelectViewButton viewName="P2" viewId="p2"></SelectViewButton>
+        </Grid>
+        <Grid size={1.5}>
+          <SelectViewButton viewName="Muu" viewId="muu"></SelectViewButton>
+        </Grid>
+      </Grid>
     </Box>
   );
 }
