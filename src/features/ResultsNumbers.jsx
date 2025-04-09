@@ -6,9 +6,8 @@ import { useSelector } from "react-redux";
 export default function ResultsNumbers() {
   const simulatedQueue = useSelector((state) => state.balance.value);
   const resultsTable = useSelector((state) => state.balance.resultsTable);
-
-  console.log("Simulated Queue:", simulatedQueue);
-  console.log("Results Table:", resultsTable);
+  const balanceIn = useSelector((state) => state.balance.balanceIn);
+  const balanceOut = useSelector((state) => state.balance.balanceOut);
 
   return (
     <Box sx={BoxSx}>
