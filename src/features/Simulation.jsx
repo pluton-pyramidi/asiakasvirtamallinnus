@@ -5,6 +5,7 @@ import InputBlock from "./InputBlock";
 import Parameters from "./Parameters";
 import ResultsGraph from "./ResultsGraph";
 import ResultsNumbers from "./ResultsNumbers";
+import ResultsNumbers2 from "./ResultsNumbers2";
 
 export default function Simulation() {
   return (
@@ -27,8 +28,11 @@ export default function Simulation() {
       <Grid size={12}>
         <ResultsGraph></ResultsGraph>
       </Grid>
-      <Grid size={12}>
+      <Grid size={6}>
         <ResultsNumbers></ResultsNumbers>
+      </Grid>
+      <Grid size={6}>
+        <ResultsNumbers2></ResultsNumbers2>
       </Grid>
     </Grid>
   );

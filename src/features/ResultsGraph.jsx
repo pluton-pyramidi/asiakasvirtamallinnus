@@ -6,7 +6,7 @@ import QueueChart from "./chart/QueueChart";
 
 export default function ResultsGraph() {
   return (
-    <Box sx={BoxSx}>
+    <Box sx={BoxSx} align="center">
       <Typography>Kuvaaja</Typography>
       <QueueChart> </QueueChart>
     </Box>
