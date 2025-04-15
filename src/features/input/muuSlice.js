@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  sufficiencyRateMuu: 0.5,
+  sufficiencyRateMuu: 0.3,
 };
 
 const muuSlice = createSlice({
@@ -17,7 +17,6 @@ const muuSlice = createSlice({
 export const { setMuu } = muuSlice.actions;
 
 // Selectors to derive variables from this state
-export const calculateInsufficencyRateMuu = (state) =>
-  1 - state.muu.sufficiencyRateMuu;
+export const calculateInsufficencyRateMuu = (state) => 1 - state.muu.sufficiencyRateMuu;
 
 export default muuSlice.reducer;

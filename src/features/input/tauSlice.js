@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // TAU (Treatment-as-usual) state for the inputvalues and parameters of this treatment module
 const initialState = {
-  laborTau: 5,
-  laborPercentageTau: 0.5,
-  sufficiencyRateTau: 0.45,
+  laborTau: 1,
+  laborPercentageTau: 1,
+  sufficiencyRateTau: 0.5,
   tauToMuuRate: 0.5,
   meetingDurationTau: 90,
   laborEfficiencyTau: 0.7,
@@ -28,8 +28,7 @@ const tauSlice = createSlice({
 export const { setTau } = tauSlice.actions;
 
 // Selectors to derive variables from this state
-export const calculateInsufficencyRateTau = (state) =>
-  1 - state.tau.sufficiencyRateTau;
+export const calculateInsufficencyRateTau = (state) => 1 - state.tau.sufficiencyRateTau;
 
 export const calculateTauToQueueRate = (state) => 1 - state.tau.tauToMuuRate;
 

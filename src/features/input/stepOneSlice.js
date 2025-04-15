@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   hoitoonohjausStepOne: 0.5,
-  laborStepOne: 5,
-  laborPercentageStepOne: 0.5,
+  laborStepOne: 1,
+  laborPercentageStepOne: 1,
   sufficiencyRateStepOne: 0.5,
   stepOneToStepTwoRate: 0.6,
   stepOneToMuuRate: 0.2,
@@ -31,15 +31,12 @@ const stepOneSlice = createSlice({
 export const { setStepOne } = stepOneSlice.actions;
 
 // Selectors to derive variables from this state
-export const calculateHoitoonohjausStepTwo = (state) =>
-  1 - state.stepOne.hoitoonohjausStepOne;
+export const calculateHoitoonohjausStepTwo = (state) => 1 - state.stepOne.hoitoonohjausStepOne;
 
-export const calculateInsufficencyRateStepOne = (state) =>
-  1 - state.stepOne.sufficiencyRateStepOne;
+export const calculateInsufficencyRateStepOne = (state) => 1 - state.stepOne.sufficiencyRateStepOne;
 
 export const calculateStepOneToQueueRate = (state) => {
-  const total =
-    state.stepOne.stepOneToStepTwoRate + state.stepOne.stepOneToMuuRate;
+  const total = state.stepOne.stepOneToStepTwoRate + state.stepOne.stepOneToMuuRate;
 
   if (total > 1) {
     return 0;

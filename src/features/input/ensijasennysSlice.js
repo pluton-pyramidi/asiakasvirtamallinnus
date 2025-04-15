@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  laborEnsijasennys: 5,
-  laborPercentageEnsijasennys: 0.5,
+  laborEnsijasennys: 1,
+  laborPercentageEnsijasennys: 1,
   meetingDurationEnsijasennys: 90,
   laborEfficiencyEnsijasennys: 0.8,
 };
@@ -13,12 +13,9 @@ const ensijasennysSlice = createSlice({
   reducers: {
     setEnsijasennys: (state, action) => {
       state.laborEnsijasennys = action.payload.laborEnsijasennys;
-      state.laborPercentageEnsijasennys =
-        action.payload.laborPercentageEnsijasennys;
-      state.meetingDurationEnsijasennys =
-        action.payload.meetingDurationEnsijasennys;
-      state.laborEfficiencyEnsijasennys =
-        action.payload.laborEfficiencyEnsijasennys;
+      state.laborPercentageEnsijasennys = action.payload.laborPercentageEnsijasennys;
+      state.meetingDurationEnsijasennys = action.payload.meetingDurationEnsijasennys;
+      state.laborEfficiencyEnsijasennys = action.payload.laborEfficiencyEnsijasennys;
     },
   },
 });

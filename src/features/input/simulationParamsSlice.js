@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   workingHoursDaily: 7.5, // Assumed working hours of a professional per day
   cycleDuration: 6, // Simulation treatment cycle duration in months
-  simulationTimeSpan: 24, // Simulation time span in months (how long a period do you want to simulate?)
+  simulationTimeSpan: 12, // Simulation time span in months (how long a period do you want to simulate?)
   treatmentDurationTau: 6, // Treatment duration for TAU in months
   treatmentDurationStepOne: 1, // Treatment duration for Step 1 in months
   treatmentDurationStepTwo: 3, // Treatment duration for Step 2 in months

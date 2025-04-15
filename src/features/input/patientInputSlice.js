@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   initialQueue: 200,
-  newPatientsPerMonth: 10,
+  newPatientsPerMonth: 50,
 };
 
 const patientInputSlice = createSlice({
