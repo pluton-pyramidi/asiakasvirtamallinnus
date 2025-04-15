@@ -73,11 +73,11 @@ export const calculateSimulationBalance = createAsyncThunk(
     const maxWeeklyCapacityStepTwo = state.stepTwo.laborStepTwo * appointmentsPerWeekStepTwo;
 
     // Unit maximum capacity for each treatment per cycle aka. the number of patients that current staff can see in one "cycle"
-    // Number of patients staff can see in a week * four weeks per month * number of months in a cycle
+    // Number of patients staff can see in a week * four weeks per month * number of months in a treatment cycle
     const maxCycleCapacityEj = maxWeeklyCapacityEj * 4 * cycleDuration;
-    const maxCycleCapacityTau = maxWeeklyCapacityTau * 4 * cycleDuration;
-    const maxCycleCapacityStepOne = maxWeeklyCapacityStepOne * 4 * cycleDuration;
-    const maxCycleCapacityStepTwo = maxWeeklyCapacityStepTwo * 4 * cycleDuration;
+    const maxCycleCapacityTau = maxWeeklyCapacityTau * 4 * (cycleDuration / treatmentDurationTau);
+    const maxCycleCapacityStepOne = maxWeeklyCapacityStepOne * 4 * (cycleDuration / treatmentDurationStepOne);
+    const maxCycleCapacityStepTwo = maxWeeklyCapacityStepTwo * 4 * (cycleDuration / treatmentDurationStepTwo);
 
     // Calculate the insufficiency rates for each treatment
     // aka. how many patients need further treatment after one treatment
@@ -166,10 +166,10 @@ export const calculateSimulationBalance = createAsyncThunk(
     const patientFlowPerMonthMuuToQueue = (patientInputPerCycleMuu * insufficencyRateMuu) / cycleDuration;
 
     // Capacity utilization rate for each treatment
-    const capacityUtilizationRateEj = (patientInputPerCycleEj / maxCycleCapacityEj) * 100;
-    const capacityUtilizationRateTau = (patientInputPerCycleTau / maxCycleCapacityTau) * 100;
-    const capacityUtilizationRateStepOne = (patientInputPerCycleStepOne / maxCycleCapacityStepOne) * 100;
-    const capacityUtilizationRateStepTwo = (patientInputPerCycleStepTwo / maxCycleCapacityStepTwo) * 100;
+    const capacityUtilizationRateEj = Math.round((patientInputPerCycleEj / maxCycleCapacityEj) * 100);
+    const capacityUtilizationRateTau = Math.round((patientInputPerCycleTau / maxCycleCapacityTau) * 100);
+    const capacityUtilizationRateStepOne = Math.round((patientInputPerCycleStepOne / maxCycleCapacityStepOne) * 100);
+    const capacityUtilizationRateStepTwo = Math.round((patientInputPerCycleStepTwo / maxCycleCapacityStepTwo) * 100);
 
     // Define capacity status for each treatment (0 = Ei potilaita ohjattuna tänne, 1 = Resurssit riittävät, 2 = Resurssit eivät riitä)
     // ATTN! This should probably be stored in global store, but for now it's here until I get the simulation up and running
@@ -217,11 +217,11 @@ export const calculateSimulationBalance = createAsyncThunk(
     };
 
     timeArray.forEach((_, i) => {
-      const newPatientsJoiningQueue = state.patientInput.newPatientsPerMonth * (i + 1);
-      const patientsReturningFromTau = patientFlowPerMonthTauToQueue * (i + 1);
-      const patientsReturningFromStepOne = patientFlowPerMonthStepOneToQueue * (i + 1);
-      const patientsReturningFromStepTwo = patientFlowPerMonthStepTwoToQueue * (i + 1);
-      const patientsReturningFromMuu = patientFlowPerMonthMuuToQueue * (i + 1);
+      const newPatientsJoiningQueue = Math.round(state.patientInput.newPatientsPerMonth * (i + 1));
+      const patientsReturningFromTau = Math.round(patientFlowPerMonthTauToQueue * (i + 1));
+      const patientsReturningFromStepOne = Math.round(patientFlowPerMonthStepOneToQueue * (i + 1));
+      const patientsReturningFromStepTwo = Math.round(patientFlowPerMonthStepTwoToQueue * (i + 1));
+      const patientsReturningFromMuu = Math.round(patientFlowPerMonthMuuToQueue * (i + 1));
 
       const total =
         newPatientsJoiningQueue +
@@ -250,10 +250,10 @@ export const calculateSimulationBalance = createAsyncThunk(
     };
 
     timeArray.forEach((_, i) => {
-      const patientsLeavingFromTau = (patientInputPerCycleTau / cycleDuration) * (i + 1);
-      const patientsLeavingFromStepOne = (patientInputPerCycleStepOne / cycleDuration) * (i + 1);
-      const patientsLeavingFromStepTwo = (patientInputPerCycleStepTwo / cycleDuration) * (i + 1);
-      const patientsLeavingFromMuu = (patientInputPerCycleMuu / cycleDuration) * (i + 1);
+      const patientsLeavingFromTau = Math.round((patientInputPerCycleTau / cycleDuration) * (i + 1));
+      const patientsLeavingFromStepOne = Math.round((patientInputPerCycleStepOne / cycleDuration) * (i + 1));
+      const patientsLeavingFromStepTwo = Math.round((patientInputPerCycleStepTwo / cycleDuration) * (i + 1));
+      const patientsLeavingFromMuu = Math.round((patientInputPerCycleMuu / cycleDuration) * (i + 1));
 
       const total =
         patientsLeavingFromTau + patientsLeavingFromStepOne + patientsLeavingFromStepTwo + patientsLeavingFromMuu;
@@ -293,65 +293,43 @@ export const calculateSimulationBalance = createAsyncThunk(
 
     // Results table for visual debugging/inspection of the simulation internal logic
     const resultsTable = [
-      { name: "Working Hours Daily", value: workingHoursDaily },
-      { name: "Cycle Duration (months)", value: cycleDuration },
-      { name: "Simulation Duration (months)", value: simulationTimeSpan },
-
-      // Treatment Hours Per Week
-      { name: "Treatment Hours Per Week (Ensijäsennys)", value: treatmentHoursPerWeekEj },
-      { name: "Treatment Hours Per Week (TAU)", value: treatmentHoursPerWeekTau },
-      { name: "Treatment Hours Per Week (Step One)", value: treatmentHoursPerWeekStepOne },
-      { name: "Treatment Hours Per Week (Step Two)", value: treatmentHoursPerWeekStepTwo },
-
-      // Appointments Per Week
-      { name: "Appointments Per Week (Ensijäsennys)", value: appointmentsPerWeekEj },
-      { name: "Appointments Per Week (TAU)", value: appointmentsPerWeekTau },
-      { name: "Appointments Per Week (Step One)", value: appointmentsPerWeekStepOne },
-      { name: "Appointments Per Week (Step Two)", value: appointmentsPerWeekStepTwo },
-
-      // Max Weekly Capacity
-      { name: "Max Weekly Capacity (Ensijäsennys)", value: maxWeeklyCapacityEj },
-      { name: "Max Weekly Capacity (TAU)", value: maxWeeklyCapacityTau },
-      { name: "Max Weekly Capacity (Step One)", value: maxWeeklyCapacityStepOne },
-      { name: "Max Weekly Capacity (Step Two)", value: maxWeeklyCapacityStepTwo },
-
-      // Max Cycle Capacity
-      { name: "Max Cycle Capacity (Ensijäsennys)", value: maxCycleCapacityEj },
-      { name: "Max Cycle Capacity (TAU)", value: maxCycleCapacityTau },
-      { name: "Max Cycle Capacity (Step One)", value: maxCycleCapacityStepOne },
-      { name: "Max Cycle Capacity (Step Two)", value: maxCycleCapacityStepTwo },
-
+      { name: "Working Hours Daily:", value: workingHoursDaily },
+      { name: "Cycle Duration (months):", value: cycleDuration },
+      { name: "Simulation Duration (months):", value: simulationTimeSpan },
       // Patient Input Per Cycle
-      { name: "Patient Input Per Cycle ()", value: patientInputPerCycleEj },
-      { name: "Patient Input Per Cycle ()", value: patientInputPerCycleTau },
-      { name: "Patient Input Per Cycle ()", value: patientInputPerCycleStepOne },
-      { name: "Patient Input Per Cycle ()", value: patientInputPerCycleStepTwo },
-
-      // Insufficiency Rates
-      { name: "Insufficiency Rate (TAU)", value: insufficencyRateTau },
-      { name: "Insufficiency Rate (Step One)", value: insufficencyRateStepOne },
-      { name: "Insufficiency Rate (Step Two)", value: insufficencyRateStepTwo },
-      { name: "Insufficiency Rate (Muu)", value: insufficencyRateMuu },
-
-      // Patients Returning to Queue
-      { name: "Patients Returning to Queue (TAU)", value: patientFlowPerMonthTauToQueue },
-      { name: "Patients Returning to Queue (Step One)", value: patientFlowPerMonthStepOneToQueue },
-      { name: "Patients Returning to Queue (Step Two)", value: patientFlowPerMonthStepTwoToQueue },
-      { name: "Patients Returning to Queue (Muu)", value: patientFlowPerMonthMuuToQueue },
-
-      // Capacity Utilization Rates
-      { name: "Capacity Utilization Rate (Ensijäsennys)", value: capacityUtilizationRateEj },
-      { name: "Capacity Utilization Rate (TAU)", value: capacityUtilizationRateTau },
-      { name: "Capacity Utilization Rate (Step One)", value: capacityUtilizationRateStepOne },
-      { name: "Capacity Utilization Rate (Step Two)", value: capacityUtilizationRateStepTwo },
-      { name: "Capacity Utilization Rate (Muu)", value: capacityUtilizationRateEj },
-
-      // Capacity Status
-      { name: "Capacity Status (Ensijäsennys)", value: capacityStatusEj },
-      { name: "Capacity Status (TAU)", value: capacityStatusTau },
-      { name: "Capacity Status (Step One)", value: capacityStatusStepOne },
-      { name: "Capacity Status (Step Two)", value: capacityStatusStepTwo },
-      { name: "Capacity Status (Muu)", value: capacityStatusEj },
+      { name: "Patient Input Per Cycle (Total):", value: patientInputTotalPerCycle },
+      { name: "", value: "-----------------Ensijäsennys-----------------" },
+      { name: "Patient Input Per Cycle (Ensijäsennys):", value: patientInputPerCycleEj },
+      { name: "Treatment Hours Per Week (Ensijäsennys):", value: treatmentHoursPerWeekEj },
+      { name: "Appointments Per Week (Ensijäsennys):", value: appointmentsPerWeekEj },
+      { name: "Max Weekly Capacity (Ensijäsennys):", value: maxWeeklyCapacityEj },
+      { name: "Max Cycle Capacity (Ensijäsennys):", value: maxCycleCapacityEj },
+      { name: "Capacity Utilization Rate (%) (Ensijäsennys):", value: capacityUtilizationRateEj },
+      { name: "Capacity Status (Ensijäsennys):", value: capacityStatusEj },
+      { name: "", value: "-----------------TAU-----------------" },
+      { name: "Patient Input Per Cycle (TAU):", value: patientInputPerCycleTau },
+      { name: "Treatment Hours Per Week (TAU):", value: treatmentHoursPerWeekTau },
+      { name: "Appointments Per Week (TAU):", value: appointmentsPerWeekTau },
+      { name: "Max Weekly Capacity (TAU):", value: maxWeeklyCapacityTau },
+      { name: "Max Cycle Capacity (TAU):", value: maxCycleCapacityTau },
+      { name: "Capacity Utilization Rate (%) (TAU):", value: capacityUtilizationRateTau },
+      { name: "Capacity Status (TAU):", value: capacityStatusTau },
+      { name: "", value: "-----------------Step One-----------------" },
+      { name: "Patient Input Per Cycle (Step One):", value: patientInputPerCycleStepOne },
+      { name: "Treatment Hours Per Week (Step One):", value: treatmentHoursPerWeekStepOne },
+      { name: "Appointments Per Week (Step One):", value: appointmentsPerWeekStepOne },
+      { name: "Max Weekly Capacity (Step One):", value: maxWeeklyCapacityStepOne },
+      { name: "Max Cycle Capacity (Step One):", value: maxCycleCapacityStepOne },
+      { name: "Capacity Utilization Rate (%) (Step One):", value: capacityUtilizationRateStepOne },
+      { name: "Capacity Status (Step One):", value: capacityStatusStepOne },
+      { name: "", value: "-----------------Step Two-----------------" },
+      { name: "Patient Input Per Cycle (Step Two):", value: patientInputPerCycleStepTwo },
+      { name: "Treatment Hours Per Week (Step Two):", value: treatmentHoursPerWeekStepTwo },
+      { name: "Appointments Per Week (Step Two):", value: appointmentsPerWeekStepTwo },
+      { name: "Max Weekly Capacity (Step Two):", value: maxWeeklyCapacityStepTwo },
+      { name: "Max Cycle Capacity (Step Two):", value: maxCycleCapacityStepTwo },
+      { name: "Capacity Utilization Rate (%) (Step Two):", value: capacityUtilizationRateStepTwo },
+      { name: "Capacity Status (Step Two):", value: capacityStatusStepTwo },
     ];
 
     // Return the final simulation product array
