@@ -7,35 +7,70 @@ export default function ResultsNumbers2() {
   const simulatedQueue = useSelector((state) => state.balance.value);
   const balanceIn = useSelector((state) => state.balance.balanceIn);
   const balanceOut = useSelector((state) => state.balance.balanceOut);
-  const newPatientsJoiningQueue = balanceIn[0];
-  const patientsReturningFromTau = balanceIn[1];
-  const patientsReturningFromStepOne = balanceIn[2];
-  const patientsReturningFromStepTwo = balanceIn[3];
-  const patientsReturningFromMuu = balanceIn[4];
-  const patientsJoiningTotal = balanceIn[5];
 
-  // Render the simulatedQueue and the arrays contained in balanceIn and balanceOut in a table format
+  const headers = [
+    "New Patients Joining Queue",
+    "Patients Return to Queue TAU",
+    "Patients Return to Queue Step One",
+    "Patients Return to Queue Step Two",
+    "Patients Return to Queue Muu",
+    "Patients Joining Total",
+    "Patients Leaving Queue TAU",
+    "Patients Leaving Queue Step One",
+    "Patients Leaving Queue Step Two",
+    "Patients Leaving Queue Muu",
+    "Patients Leaving Queue Total",
+    "Simulated Queue",
+  ];
+
+  const data = [
+    balanceIn.newPatientsJoiningQueue,
+    balanceIn.patientsReturningFromTau,
+    balanceIn.patientsReturningFromStepOne,
+    balanceIn.patientsReturningFromStepTwo,
+    balanceIn.patientsReturningFromMuu,
+    balanceIn.patientsJoiningTotal,
+    balanceOut.patientsLeavingFromTau,
+    balanceOut.patientsLeavingFromStepOne,
+    balanceOut.patientsLeavingFromStepTwo,
+    balanceOut.patientsLeavingFromMuu,
+    balanceOut.patientsLeavingTotal,
+    simulatedQueue,
+  ];
+
+  const renderTableRows = () => {
+    return headers.map((header, rowIndex) => (
+      <tr key={rowIndex}>
+        <td style={{ border: "1px solid black", padding: "8px" }}>
+          <strong>{header}</strong>
+        </td>
+        {data[rowIndex]?.map((value, colIndex) => (
+          <td key={colIndex} style={{ border: "1px solid black", padding: "8px" }}>
+            {value}
+          </td>
+        ))}
+      </tr>
+    ));
+  };
+
   const renderTable = () => {
+    if (!simulatedQueue.length) {
+      return <Typography>No data available</Typography>;
+    }
+
     return (
-      <table>
+      <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
           <tr>
-            <th>Month</th>
-            <th>Simulated Queue</th>
-            <th>Balance In</th>
-            <th>Balance Out</th>
+            <th style={{ border: "1px solid black" }}></th>
+            {simulatedQueue.map((_, index) => (
+              <th key={index} style={{ border: "1px solid black" }}>
+                Month {index + 1}
+              </th>
+            ))}
           </tr>
         </thead>
-        <tbody>
-          {simulatedQueue.map((value, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{value}</td>
-              <td>{balanceIn[index]}</td>
-              <td>{balanceOut[index]}</td>
-            </tr>
-          ))}
-        </tbody>
+        <tbody>{renderTableRows()}</tbody>
       </table>
     );
   };
@@ -45,21 +80,7 @@ export default function ResultsNumbers2() {
       <Typography variant="h5" component="h2" align="center">
         Tase
       </Typography>
-
-      {/* Render the results table */}
       {renderTable()}
-
-      {/* Render the simulated queue */}
-      <Typography variant="h6" component="h3" align="center">
-        Simulated Queue:
-      </Typography>
-      <Box>
-        {simulatedQueue.map((value, index) => (
-          <Typography key={index}>
-            Month {index + 1}: {value}
-          </Typography>
-        ))}
-      </Box>
     </Box>
   );
 }

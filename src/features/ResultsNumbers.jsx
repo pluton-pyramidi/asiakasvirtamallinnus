@@ -20,19 +20,7 @@ export default function ResultsNumbers() {
       <Box>
         {resultsTable.map((row, index) => (
           <Typography key={index}>
-            {row.name}: {row.value}
-          </Typography>
-        ))}
-      </Box>
-
-      {/* Render the simulated queue */}
-      <Typography variant="h6" component="h3" align="center">
-        Simulated Queue:
-      </Typography>
-      <Box>
-        {simulatedQueue.map((value, index) => (
-          <Typography key={index}>
-            Month {index + 1}: {value}
+            {row.name} {row.value}
           </Typography>
         ))}
       </Box>
