@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NumberInput from "../../components/NumberInput";
 import PercentageInput from "../../components/PercentageInput";
@@ -16,6 +16,14 @@ export default function StepTwo() {
   const [input, setInput] = useState(stepTwo);
   const setAction = setStepTwo;
 
+  // Track whether the input has been modified
+  const [isModified, setIsModified] = useState(false);
+
+  // Check if the input differs from the initial state
+  useEffect(() => {
+    setIsModified(JSON.stringify(input) !== JSON.stringify(stepTwo));
+  }, [input, stepTwo]);
+
   // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
@@ -26,28 +34,33 @@ export default function StepTwo() {
 
   // Submit the local input to global store and run the simulation
   // This function is imported from utils
-  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
+  const handleSubmit = () => {
+    handleSubmitAndRun(dispatch, input, setAction);
+    setIsModified(false); // Reset the modified state after submission
+  };
 
   return (
     <Box>
-      <Typography>
-        Hoitoonohjaus: {Math.round(hoitoonohjausStepTwo * 100)} %
-      </Typography>
+      <Typography>Hoitoonohjaus: {Math.round(hoitoonohjausStepTwo * 100)} %</Typography>
       <NumberInput
         label="Tekijöitä"
         value={input.laborStepTwo}
-        handleChange={(e) =>
-          handleInputChange("laborStepTwo", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("laborStepTwo", Number(e.target.value))}
       />
       <PercentageInput
         label="Työaika-%"
         value={input.laborPercentageStepTwo}
-        handleChange={(e) =>
-          handleInputChange("laborPercentageStepTwo", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("laborPercentageStepTwo", Number(e.target.value))}
       />
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button
+        onClick={handleSubmit}
+        style={{
+          backgroundColor: isModified ? "orange" : "gray",
+          color: "white",
+        }}
+      >
+        Submit
+      </Button>
     </Box>
   );
 }

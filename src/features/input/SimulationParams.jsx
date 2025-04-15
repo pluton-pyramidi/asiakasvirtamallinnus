@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NumberInput from "../../components/NumberInput";
 import { Box, Button, Typography } from "@mui/material";
@@ -13,6 +13,14 @@ export default function SimulationParams() {
   const [input, setInput] = useState(simulationParams);
   const setAction = setSimulationParams;
 
+  // Track whether the input has been modified
+  const [isModified, setIsModified] = useState(false);
+
+  // Check if the input differs from the initial state
+  useEffect(() => {
+    setIsModified(JSON.stringify(input) !== JSON.stringify(simulationParams));
+  }, [input, simulationParams]);
+
   // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
@@ -23,16 +31,17 @@ export default function SimulationParams() {
 
   // Submit the local input to global store and run the simulation
   // This function is imported from utils
-  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
+  const handleSubmit = () => {
+    handleSubmitAndRun(dispatch, input, setAction);
+    setIsModified(false); // Reset the modified state after submission
+  };
 
   return (
     <Box>
       <NumberInput
         label="Ammattilaisen työaika (h/päivä):"
         value={input.workingHoursDaily}
-        handleChange={(e) =>
-          handleInputChange("workingHoursDaily", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("workingHoursDaily", Number(e.target.value))}
       />
       {/* This cycle variable doesnt work as expected. 
       I need to figure out how this time cycle works in the model.
@@ -47,33 +56,33 @@ export default function SimulationParams() {
       <NumberInput
         label="Mallinnettu ajanjakso (kk):"
         value={input.simulationTimeSpan}
-        handleChange={(e) =>
-          handleInputChange("simulationTimeSpan", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("simulationTimeSpan", Number(e.target.value))}
       />
       <NumberInput
         label="Hoitojakson kesto, tavanomainen hoito (kk):"
         value={input.treatmentDurationTau}
-        handleChange={(e) =>
-          handleInputChange("treatmentDurationTau", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("treatmentDurationTau", Number(e.target.value))}
       />
       <NumberInput
         label="Hoitojakson kesto, ensimmäinen porras (kk):"
         value={input.treatmentDurationStepOne}
-        handleChange={(e) =>
-          handleInputChange("treatmentDurationStepOne", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("treatmentDurationStepOne", Number(e.target.value))}
       />
       <NumberInput
         label="Hoitojakson kesto, toinen porras (kk):"
         value={input.treatmentDurationStepTwo}
-        handleChange={(e) =>
-          handleInputChange("treatmentDurationStepTwo", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("treatmentDurationStepTwo", Number(e.target.value))}
       />
 
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button
+        onClick={handleSubmit}
+        style={{
+          backgroundColor: isModified ? "orange" : "gray",
+          color: "white",
+        }}
+      >
+        Submit
+      </Button>
     </Box>
   );
 }

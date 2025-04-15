@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NumberInput from "../../components/NumberInput";
 import PercentageInput from "../../components/PercentageInput";
@@ -14,6 +14,14 @@ export default function EnsijasennysParams() {
   const [input, setInput] = useState(ensijasennys);
   const setAction = setEnsijasennys;
 
+  // Track whether the input has been modified
+  const [isModified, setIsModified] = useState(false);
+
+  // Check if the input differs from the initial state
+  useEffect(() => {
+    setIsModified(JSON.stringify(input) !== JSON.stringify(ensijasennys));
+  }, [input, ensijasennys]);
+
   // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
@@ -24,31 +32,32 @@ export default function EnsijasennysParams() {
 
   // Submit the local input to global store and run the simulation
   // This function is imported from utils
-  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
+  const handleSubmit = () => {
+    handleSubmitAndRun(dispatch, input, setAction);
+    setIsModified(false); // Reset the modified state after submission
+  };
 
   return (
     <Box>
       <NumberInput
         label="Tapaamisen keskimääräinen kesto sis. valmistautumisen ja kirjaukset (min)"
         value={input.meetingDurationEnsijasennys}
-        handleChange={(e) =>
-          handleInputChange(
-            "meetingDurationEnsijasennys",
-            Number(e.target.value)
-          )
-        }
+        handleChange={(e) => handleInputChange("meetingDurationEnsijasennys", Number(e.target.value))}
       />
       <PercentageInput
         label="Työajankäytön tehokkuus-%"
         value={input.laborEfficiencyEnsijasennys}
-        handleChange={(e) =>
-          handleInputChange(
-            "laborEfficiencyEnsijasennys",
-            Number(e.target.value)
-          )
-        }
+        handleChange={(e) => handleInputChange("laborEfficiencyEnsijasennys", Number(e.target.value))}
       />
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button
+        onClick={handleSubmit}
+        style={{
+          backgroundColor: isModified ? "orange" : "gray",
+          color: "white",
+        }}
+      >
+        Submit
+      </Button>
     </Box>
   );
 }

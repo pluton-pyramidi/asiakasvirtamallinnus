@@ -17,6 +17,7 @@ export default function SelectViewButton({ viewName, viewId }) {
       <Button
         onClick={() => handleButtonClick(viewId)}
         className={currentView === viewId ? "active" : ""}
+        style={currentView === viewId ? { backgroundColor: "gray" } : {}}
       >
         {viewName}
       </Button>

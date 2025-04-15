@@ -12,6 +12,14 @@ export default function PatientInput() {
   const [input, setInput] = useState(patientInput);
   const setAction = setPatientInput;
 
+  // Track whether the input has been modified
+  const [isModified, setIsModified] = useState(false);
+
+  // Check if the input differs from the initial state
+  useEffect(() => {
+    setIsModified(JSON.stringify(input) !== JSON.stringify(patientInput));
+  }, [input, patientInput]);
+
   // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
@@ -22,25 +30,32 @@ export default function PatientInput() {
 
   // Submit the local input to global store and run the simulation
   // This function is imported from utils
-  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
+  const handleSubmit = () => {
+    handleSubmitAndRun(dispatch, input, setAction);
+    setIsModified(false); // Reset the modified state after submission
+  };
 
   return (
     <Box>
       <NumberInput
         label="Jono alussa"
         value={input.initialQueue}
-        handleChange={(e) =>
-          handleInputChange("initialQueue", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("initialQueue", Number(e.target.value))}
       />
       <NumberInput
         label="Uusia potilaita/kk"
         value={input.newPatientsPerMonth}
-        handleChange={(e) =>
-          handleInputChange("newPatientsPerMonth", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("newPatientsPerMonth", Number(e.target.value))}
       />
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button
+        onClick={handleSubmit}
+        style={{
+          backgroundColor: isModified ? "orange" : "gray",
+          color: "white",
+        }}
+      >
+        Submit
+      </Button>
     </Box>
   );
 }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NumberInput from "../../components/NumberInput";
 import PercentageInput from "../../components/PercentageInput";
@@ -16,6 +16,14 @@ export default function MuuParams() {
   const insufficiencyRateMuu = useSelector(calculateInsufficencyRateMuu);
   const muuToQueueRate = insufficiencyRateMuu;
 
+  // Track whether the input has been modified
+  const [isModified, setIsModified] = useState(false);
+
+  // Check if the input differs from the initial state
+  useEffect(() => {
+    setIsModified(JSON.stringify(input) !== JSON.stringify(muu));
+  }, [input, muu]);
+
   // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
@@ -26,22 +34,28 @@ export default function MuuParams() {
 
   // Submit the local input to global store and run the simulation
   // This function is imported from utils
-  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
+  const handleSubmit = () => {
+    handleSubmitAndRun(dispatch, input, setAction);
+    setIsModified(false); // Reset the modified state after submission
+  };
 
   return (
     <Box>
       <PercentageInput
         label="Muu: Hoito riittävää (ei jatkohoidon tarvetta):"
         value={input.sufficiencyRateMuu}
-        handleChange={(e) =>
-          handleInputChange("sufficiencyRateMuu", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("sufficiencyRateMuu", Number(e.target.value))}
       />
-      <Typography>
-        Asiakas palaa suoraan takaisin jonoon per kuukausi:{" "}
-        {Math.round(muuToQueueRate * 100)} %
-      </Typography>
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Typography>Asiakas palaa suoraan takaisin jonoon per kuukausi: {Math.round(muuToQueueRate * 100)} %</Typography>
+      <Button
+        onClick={handleSubmit}
+        style={{
+          backgroundColor: isModified ? "orange" : "gray",
+          color: "white",
+        }}
+      >
+        Submit
+      </Button>
     </Box>
   );
 }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NumberInput from "../../components/NumberInput";
 import PercentageInput from "../../components/PercentageInput";
@@ -14,6 +14,14 @@ export default function Tau() {
   const [input, setInput] = useState(tau);
   const setAction = setTau;
 
+  // Track whether the input has been modified
+  const [isModified, setIsModified] = useState(false);
+
+  // Check if the input differs from the initial state
+  useEffect(() => {
+    setIsModified(JSON.stringify(input) !== JSON.stringify(tau));
+  }, [input, tau]);
+
   // Update local input state when the input is changed
   const handleInputChange = (field, value) => {
     setInput((prevInput) => ({
@@ -24,25 +32,32 @@ export default function Tau() {
 
   // Submit the local input to global store and run the simulation
   // This function is imported from utils
-  const handleSubmit = () => handleSubmitAndRun(dispatch, input, setAction);
+  const handleSubmit = () => {
+    handleSubmitAndRun(dispatch, input, setAction);
+    setIsModified(false); // Reset the modified state after submission
+  };
 
   return (
     <Box>
       <NumberInput
         label="Tekijöitä"
         value={input.laborTau}
-        handleChange={(e) =>
-          handleInputChange("laborTau", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("laborTau", Number(e.target.value))}
       />
       <PercentageInput
         label="Työaika-%"
         value={input.laborPercentageTau}
-        handleChange={(e) =>
-          handleInputChange("laborPercentageTau", Number(e.target.value))
-        }
+        handleChange={(e) => handleInputChange("laborPercentageTau", Number(e.target.value))}
       />
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button
+        onClick={handleSubmit}
+        style={{
+          backgroundColor: isModified ? "orange" : "gray",
+          color: "white",
+        }}
+      >
+        Submit
+      </Button>
     </Box>
   );
 }
