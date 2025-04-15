@@ -41,11 +41,11 @@ export default function ResultsNumbers2() {
   const renderTableRows = () => {
     return headers.map((header, rowIndex) => (
       <tr key={rowIndex}>
-        <td style={{ border: "1px solid black", padding: "8px" }}>
+        <td style={{ border: "1px solid grey", padding: "8px" }}>
           <strong>{header}</strong>
         </td>
         {data[rowIndex]?.map((value, colIndex) => (
-          <td key={colIndex} style={{ border: "1px solid black", padding: "8px" }}>
+          <td key={colIndex} style={{ border: "1px solid grey", padding: "8px" }}>
             {value}
           </td>
         ))}
@@ -62,9 +62,9 @@ export default function ResultsNumbers2() {
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
           <tr>
-            <th style={{ border: "1px solid black" }}></th>
+            <th style={{ border: "1px solid grey" }}></th>
             {simulatedQueue.map((_, index) => (
-              <th key={index} style={{ border: "1px solid black" }}>
+              <th key={index} style={{ border: "1px solid grey" }}>
                 Month {index + 1}
               </th>
             ))}
