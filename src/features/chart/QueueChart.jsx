@@ -23,6 +23,7 @@ export default function QueueChart() {
           },
         ]}
         xAxis={[{ scaleType: "point", data: xAxis }]}
+        yAxis={[{ min: 0 }]}
       ></LineChart>
     </Box>
   );
