@@ -19,12 +19,12 @@ export const calculateSimulationBalance = createAsyncThunk(
     // Simulation parameters
     // ---------------------------------------
 
-    //// Get predefined simulation parameters from the state
-    // Assumed daily working hours
+    //// Get predefined simulation parameters from state
+    // Assumed daily working hours of all professionals working in the unit
     const workingHoursDaily = state.simulationParams.workingHoursDaily;
 
     // Simulation time cycle (months)
-    // This number should be the same as the lenght of the longest treatment duration
+    // This number is supposed to be the same as the length of the longest treatment duration
     const cycleDuration = state.simulationParams.cycleDuration;
 
     // Simulation duration (months)
@@ -40,7 +40,7 @@ export const calculateSimulationBalance = createAsyncThunk(
     // Treatment duration for step two (months)
     const treatmentDurationStepTwo = state.simulationParams.treatmentDurationStepTwo;
 
-    // How many hours each professional is assigned to produce this treatment per week
+    // How many hours each professional is allocated to produce this treatment per week
     // % of daily hours dedicated to this treatment * daily hours * 5 days a week
     const treatmentHoursPerWeekEj = state.ensijasennys.laborPercentageEnsijasennys * workingHoursDaily * 5;
     const treatmentHoursPerWeekTau = state.tau.laborPercentageTau * workingHoursDaily * 5;
@@ -97,7 +97,7 @@ export const calculateSimulationBalance = createAsyncThunk(
     // Simulation business logic
     // ---------------------------------------
 
-    // KEY ASSUMPTION: Patients "leave queue" when they enter Ensijäsennys or treatment
+    // KEY ASSUMPTION: Patients "leave queue" when they enter treatment (incl. Ensijäsennys)
 
     // Patient input to the simulation per cycle
     // No of patients in queue + new patients joining queue per month * cycle duration
