@@ -11,6 +11,7 @@ export default function Model() {
         <Grid size={12}>
           <Typography>[Mallipuu tähän]</Typography>
         </Grid>
+        <Grid size={12}></Grid>
 
         <Grid size={1.5}>
           <SelectViewButton viewName="Alkutilanne" viewId="patientInput"></SelectViewButton>
