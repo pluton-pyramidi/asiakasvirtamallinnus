@@ -2,13 +2,15 @@
 
 ## WORK-IN-PROGRESS
 
-This is the development repo of a mental healthcare station patient flow simulation single page web app.
+This is the development repo of a mental healthcare station patient flow simulation web app.
 
 Contact: alex.villa@hus.fi
 
 ## What is this simulation about?
 
-The simulation models the flow of patients through a mental healthcare station over time. It estimates how many patients enter and leave the queue, how treatment resources are utilized, and ultimately predicts how the patient queue evolves month by month.
+This simulation acts like a discrete event model to simulate patient dynamics through a healthcare station, modeling the flow of patients through a mental healthcare station over time. It estimates how many patients enter and leave the queue, how treatment resources (staff) are utilized, and ultimately predicts how the patient queue evolves month by month.
+
+## Simulation model logic
 
 ### 1. Core Purpose
 
