@@ -1,10 +1,11 @@
 import { Box } from "@mui/material";
-import LineChart from "../../components/LineChart.jsx";
+import { LineChartDraw } from "../../components/LineChart.jsx";
+import { D3Chart } from "../../utils/D3Chart.jsx";
 
-export default function QueueChart() {
+export const QueueChart = () => {
   return (
     <Box>
       <LineChart></LineChart>
     </Box>
   );
-}
+};
