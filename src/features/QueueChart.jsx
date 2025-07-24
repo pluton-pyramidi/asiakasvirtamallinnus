@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { BoxSx } from "../utils/ComponentSx.jsx";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { LineChartDraw } from "../components/LineChart.jsx";
 import { useQueueData } from "../hooks/useQueueData.js";
 import { useElementSize } from "../hooks/useElementSize.js";

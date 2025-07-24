@@ -3,7 +3,7 @@ import { Grid } from "@mui/material";
 import Model from "./Model";
 import InputBlock from "./InputBlock";
 import Parameters from "./Parameters";
-import ResultsGraph from "./ResultsGraph";
+import { QueueChart } from "./QueueChart";
 import ResultsNumbers from "./ResultsNumbers";
 import ResultsNumbers2 from "./ResultsNumbers2";
 
@@ -26,7 +26,7 @@ export default function Simulation() {
         <Parameters></Parameters>
       </Grid>
       <Grid size={12}>
-        <ResultsGraph></ResultsGraph>
+        <QueueChart></QueueChart>
       </Grid>
       <Grid size={6}>
         <ResultsNumbers></ResultsNumbers>
