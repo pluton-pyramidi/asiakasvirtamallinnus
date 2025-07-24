@@ -21,6 +21,10 @@ export const LineChartDraw = (
     yRange = [height - marginBottom, marginTop], // [bottom, top]
     yFormat, // a format specifier string for the y-axis
     color = "currentColor", // stroke color of line, as a constant or a function of *z*
+    strokeLinecap, // stroke line cap of line
+    strokeLinejoin, // stroke line join of line
+    strokeWidth = 1.5, // stroke width of line
+    strokeOpacity, // stroke opacity of line
   } = {}
 ) => {
   // Compute values.
@@ -40,7 +44,7 @@ export const LineChartDraw = (
     .axisBottom(xScale)
     .ticks(width / 80)
     .tickSizeOuter(0);
-  const yAxis = d3.axisLeft(yScale).ticks(height / 60, yFormat);
+  const yAxis = d3.axisLeft(yScale).ticks(height / 40, yFormat);
 
   // Construct a line generator.
   const line = d3
@@ -57,9 +61,6 @@ export const LineChartDraw = (
     .attr("viewBox", [0, 0, width, height])
     .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
     .style("-webkit-tap-highlight-color", "transparent")
-    .on("pointerenter", pointerentered)
-    .on("pointermove", pointermoved)
-    .on("pointerleave", pointerleft)
     .on("touchstart", (event) => event.preventDefault());
 
   svg
@@ -73,6 +74,13 @@ export const LineChartDraw = (
     .call(yAxis)
     .call((g) => g.select(".domain").remove())
     .call((g) =>
+      g
+        .selectAll(".tick line")
+        .clone()
+        .attr("x2", width - marginLeft - marginRight)
+        .attr("stroke-opacity", 0.1)
+    )
+    .call((g) =>
       g.append("text").attr("x", -marginLeft).attr("y", 10).attr("fill", "currentColor").attr("text-anchor", "start")
     );
 
@@ -84,12 +92,9 @@ export const LineChartDraw = (
     .attr("stroke-linejoin", strokeLinejoin)
     .attr("stroke-width", strokeWidth)
     .attr("stroke-opacity", strokeOpacity)
-    .selectAll("path")
-    .data(d3.group(I, (i) => Z[i]))
-    .join("path")
-    .style("mix-blend-mode", mixBlendMode)
-    .attr("stroke", typeof color === "function" ? ([z]) => color(z) : null)
-    .attr("d", ([, I]) => line(I));
+    .append("path")
+    .attr("d", line(d3.range(data.length)));
+
   const dot = svg.append("g").attr("display", "none");
 
   dot.append("circle").attr("r", 2.5);
@@ -100,30 +105,6 @@ export const LineChartDraw = (
     .attr("font-size", 10)
     .attr("text-anchor", "middle")
     .attr("y", -8);
-
-  function pointermoved(event) {
-    const [xm, ym] = d3.pointer(event);
-    const i = d3.least(I, (i) => Math.hypot(xScale(X[i]) - xm, yScale(Y[i]) - ym)); // closest point
-    path
-      .style("stroke", ([z]) => (Z[i] === z ? null : "#ddd"))
-      .filter(([z]) => Z[i] === z)
-      .raise();
-    dot.attr("transform", `translate(${xScale(X[i])},${yScale(Y[i])})`);
-    if (T) dot.select("text").text(T[i]);
-    svg.property("value", O[i]).dispatch("input", { bubbles: true });
-  }
-
-  function pointerentered() {
-    path.style("mix-blend-mode", null).style("stroke", "#ddd");
-    dot.attr("display", null);
-  }
-
-  function pointerleft() {
-    path.style("mix-blend-mode", mixBlendMode).style("stroke", null);
-    dot.attr("display", "none");
-    svg.node().value = null;
-    svg.dispatch("input", { bubbles: true });
-  }
 
   return Object.assign(svg.node(), { value: null });
 };

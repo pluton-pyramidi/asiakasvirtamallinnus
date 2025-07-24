@@ -10,22 +10,23 @@ export const D3Chart = (props) => {
 
   const [chartData, setChartData] = useState(undefined);
 
-  // Initial component mount; async-load the chart data
   useEffect(() => {
-    const getData = async () => {
-      // console.log( `Loading ${id}` );
-      const data = await chartLoadFunction();
-      setChartData(data);
+    // This useEffect runs on component mount and whenever chartLoadFunction changes.
+    let isMounted = true;
+    chartLoadFunction().then((data) => {
+      if (isMounted) setChartData(data);
+    });
+    return () => {
+      isMounted = false;
     };
-    getData();
-  }, []);
+  }, [chartLoadFunction]);
 
   // This second useEffect runs on component mount and whenever chartData or w/h change.
   // Use it to resize or draw the chart as needed.
   // The App parent component sets a resize prop to help us decide.
   useEffect(() => {
     // We need daddy before we can render.  Also chartData.
-    const divChart = document.getElementById("#" + id);
+    const divChart = document.getElementById(id);
     if (divChart && chartData) {
       const drawChart = async (divChart) => {
         if (resize) {
@@ -36,10 +37,9 @@ export const D3Chart = (props) => {
           replaceChart(divChart, chartSvg);
         }
       };
-      // console.log( `Drawing ${id}` );
       drawChart(divChart, chartData);
     }
   }, [chartData, width, height]);
 
-  return <Box className="d3Chart" id={"#" + id}></Box>;
+  return <Box className="d3Chart" id={id}></Box>;
 };
