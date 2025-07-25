@@ -1,15 +1,15 @@
-export const cleanChart = (divChart) => {
-  while (divChart.firstChild) {
-    divChart.removeChild(divChart.firstChild);
+export const cleanComponent = (divComponent) => {
+  while (divComponent.firstChild) {
+    divComponent.removeChild(divComponent.firstChild);
   }
 };
 
-export const replaceChart = (divChart, chartSvg) => {
-  cleanChart(divChart);
-  divChart.append(chartSvg);
+export const replaceComponent = (divComponent, chartSvg) => {
+  cleanComponent(divComponent);
+  divComponent.append(chartSvg);
 };
 
-export const fetchChartData = async (url) => {
+export const fetchComponentData = async (url) => {
   return new Promise((resolve) => {
     fetch(url, {
       headers: {

@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { LineChartDraw } from "../components/LineChart.jsx";
 import { useQueueData } from "../hooks/useQueueData.js";
 import { useElementSize } from "../hooks/useElementSize.js";
-import { D3Chart } from "../utils/D3Chart.jsx";
+import { D3Component } from "../utils/D3Component.jsx";
 
 export const QueueChart = () => {
   const queueData = useQueueData();
@@ -14,9 +14,9 @@ export const QueueChart = () => {
     {
       id: "queueChart",
       options: {},
-      chartLoadFunction: () => Promise.resolve(queueData),
-      chartDrawFunction: LineChartDraw,
-      chartResizeFunction: LineChartDraw, // If no special resize code is needed, use the draw function for both draw and resize.
+      componentLoadFunction: () => Promise.resolve(queueData),
+      componentDrawFunction: LineChartDraw,
+      componentResizeFunction: LineChartDraw, // If no special resize code is needed, use the draw function for both draw and resize.
     },
   ];
 
@@ -52,7 +52,7 @@ export const QueueChart = () => {
     >
       {charts.map((c) =>
         showChart.includes(c.id) ? (
-          <D3Chart
+          <D3Component
             id={`chart-${c.id}`}
             key={c.id}
             width={cellWidth}
@@ -60,9 +60,9 @@ export const QueueChart = () => {
             resize={resize}
             reload={reload}
             options={c.options}
-            chartLoadFunction={c.chartLoadFunction}
-            chartDrawFunction={c.chartDrawFunction}
-            chartResizeFunction={c.chartResizeFunction}
+            componentLoadFunction={c.componentLoadFunction}
+            componentDrawFunction={c.componentDrawFunction}
+            componentResizeFunction={c.componentResizeFunction}
           />
         ) : null
       )}
