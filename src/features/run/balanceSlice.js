@@ -97,7 +97,7 @@ export const calculateSimulationBalance = createAsyncThunk(
     // Simulation business logic
     // ---------------------------------------
 
-    // KEY ASSUMPTION: Patients "leave queue" when they enter treatment (incl. Ensijäsennys)
+    // KEY ASSUMPTION: Patients "leave queue" when they enter treatment
 
     // Patient input to the simulation per cycle
     // No of patients in queue + new patients joining queue per month * cycle duration
@@ -107,16 +107,24 @@ export const calculateSimulationBalance = createAsyncThunk(
     // Patient input to Ensijäsennys per cycle
     // The maximum number of patients entering Ensijäsennys is equal to the max number of appointments staff can do
     // If the number of patients exceeds the max capacity, the number of patients entering Ensijäsennys is equal to the max capacity
-    // "Leftover" patients remain in queue until the duration of Ensijäsennys has passed
-    const patientInputPerCycleEj =
-      patientInputTotalPerCycle > maxCycleCapacityEj ? maxCycleCapacityEj : patientInputTotalPerCycle;
+    let rawInputPerCycleEj = patientInputTotalPerCycle;
+    let patientInputPerCycleEj = rawInputPerCycleEj;
+    let patientInputOverflowEj = 0;
+    if (rawInputPerCycleEj > maxCycleCapacityEj) {
+      patientInputPerCycleEj = maxCycleCapacityEj;
+      patientInputOverflowEj = rawInputPerCycleEj - maxCycleCapacityEj;
+    }
 
     // Patient input to TAU per cycle
     // Input based on patient input to Ensijäsennys, referral rate to TAU, & current TAU capacity
-    const patientInputPerCycleTau =
-      patientInputPerCycleEj * state.hoitoonohjaus.hoitoonohjausTau > maxCycleCapacityTau
-        ? maxCycleCapacityTau
-        : patientInputPerCycleEj * state.hoitoonohjaus.hoitoonohjausTau;
+    let rawInputPerCycleTau = patientInputPerCycleEj * state.hoitoonohjaus.hoitoonohjausTau;
+    let patientInputPerCycleTau = rawInputPerCycleTau;
+    let patientInputOverflowTau = 0;
+
+    if (rawInputPerCycleTau > maxCycleCapacityTau) {
+      patientInputPerCycleTau = maxCycleCapacityTau;
+      patientInputOverflowTau = rawInputPerCycleTau - maxCycleCapacityTau;
+    }
 
     // Re-referral rates from TAU
     const patientReReferralsPerMonthTau = (patientInputPerCycleTau * insufficencyRateTau) / cycleDuration;
@@ -125,11 +133,15 @@ export const calculateSimulationBalance = createAsyncThunk(
 
     // Patient input to step one per cycle
     // Input based on patient flow from Ensijäsennys, and two referral rates: 1) to stepped care, and 2) to step one
-    const patientInputPerCycleStepOne =
-      patientInputPerCycleEj * state.hoitoonohjaus.hoitoonohjausSteppedCare * state.stepOne.hoitoonohjausStepOne >
-      maxCycleCapacityStepOne
-        ? maxCycleCapacityStepOne
-        : patientInputPerCycleEj * state.hoitoonohjaus.hoitoonohjausSteppedCare * state.stepOne.hoitoonohjausStepOne;
+    let rawInputPerCycleStepOne =
+      patientInputPerCycleEj * state.hoitoonohjaus.hoitoonohjausSteppedCare * state.stepOne.hoitoonohjausStepOne;
+    let patientInputPerCycleStepOne = rawInputPerCycleStepOne;
+    let patientInputOverflowStepOne = 0;
+
+    if (rawInputPerCycleStepOne > maxCycleCapacityStepOne) {
+      patientInputPerCycleStepOne = maxCycleCapacityStepOne;
+      patientInputOverflowStepOne = rawInputPerCycleStepOne - maxCycleCapacityStepOne;
+    }
 
     // Re-referral rates from step one
     const patientReReferralsPerMonthStepOne = (patientInputPerCycleStepOne * insufficencyRateStepOne) / cycleDuration;
@@ -140,13 +152,16 @@ export const calculateSimulationBalance = createAsyncThunk(
 
     // Patient input to step two per cycle
     // Based on patient input, two referral rates and the re-referral rate from step one to step two
-    const patientInputPerCycleStepTwo =
+    let rawInputPerCycleStepTwo =
       patientInputPerCycleEj * state.hoitoonohjaus.hoitoonohjausSteppedCare * calculateHoitoonohjausStepTwo(state) +
-        patientReReferralsPerMonthStepOneToStepTwo * cycleDuration >
-      maxCycleCapacityStepTwo
-        ? maxCycleCapacityStepTwo
-        : patientInputPerCycleEj * state.hoitoonohjaus.hoitoonohjausSteppedCare * calculateHoitoonohjausStepTwo(state) +
-          patientReReferralsPerMonthStepOneToStepTwo * cycleDuration;
+      patientReReferralsPerMonthStepOneToStepTwo * cycleDuration;
+    let patientInputPerCycleStepTwo = rawInputPerCycleStepTwo;
+    let patientInputOverflowStepTwo = 0;
+
+    if (rawInputPerCycleStepTwo > maxCycleCapacityStepTwo) {
+      patientInputPerCycleStepTwo = maxCycleCapacityStepTwo;
+      patientInputOverflowStepTwo = rawInputPerCycleStepTwo - maxCycleCapacityStepTwo;
+    }
 
     // Re-referral rates from step two
     const patientReReferralsPerMonthStepTwo = (patientInputPerCycleStepTwo * insufficencyRateStepTwo) / cycleDuration;
@@ -172,27 +187,26 @@ export const calculateSimulationBalance = createAsyncThunk(
     const capacityUtilizationRateStepTwo = Math.round((patientInputPerCycleStepTwo / maxCycleCapacityStepTwo) * 100);
 
     // Define capacity status for each treatment (0 = Ei potilaita ohjattuna tänne, 1 = Resurssit riittävät, 2 = Resurssit eivät riitä)
-    // ATTN! This should probably be stored in global store, but for now it's here until I get the simulation up and running
     const capacityStatusEj =
-      capacityUtilizationRateEj > 100
+      patientInputOverflowEj > 0
         ? "Resurssit eivät riitä: potilaita tulossa tänne enemmän kuin ammattilaiset ehtivät viikossa tavassa"
         : capacityUtilizationRateEj === 0
         ? "Ei potilaita ohjattuna tänne"
         : "Resurssit riittävät: kaikille tänne tuleville potilaille löytyy ammattilainen tapaamaan heitä kerran viikossa";
     const capacityStatusTau =
-      capacityUtilizationRateTau > 100
+      patientInputOverflowTau > 0
         ? "Resurssit eivät riitä: potilaita tulossa tänne enemmän kuin ammattilaiset ehtivät viikossa tavassa"
         : capacityUtilizationRateTau === 0
         ? "Ei potilaita ohjattuna tänne"
         : "Resurssit riittävät: kaikille tänne tuleville potilaille löytyy ammattilainen tapaamaan heitä kerran viikossa";
     const capacityStatusStepOne =
-      capacityUtilizationRateStepOne > 100
+      patientInputOverflowStepOne > 0
         ? "Resurssit eivät riitä: potilaita tulossa tänne enemmän kuin ammattilaiset ehtivät viikossa tavassa"
         : capacityUtilizationRateStepOne === 0
         ? "Ei potilaita ohjattuna tänne"
         : "Resurssit riittävät: kaikille tänne tuleville potilaille löytyy ammattilainen tapaamaan heitä kerran viikossa";
     const capacityStatusStepTwo =
-      capacityUtilizationRateStepTwo > 100
+      patientInputOverflowStepTwo > 0
         ? "Resurssit eivät riitä: potilaita tulossa tänne enemmän kuin ammattilaiset ehtivät viikossa tavassa"
         : capacityUtilizationRateStepTwo === 0
         ? "Ei potilaita ohjattuna tänne"
@@ -363,6 +377,35 @@ export const calculateSimulationBalance = createAsyncThunk(
       tauToQueueRate,
       stepOneToQueueRate,
       stepTwoToQueueRate,
+      patientInputOverflowEj,
+      patientInputOverflowTau,
+      patientInputOverflowStepOne,
+      patientInputOverflowStepTwo,
+      capacityUtilizationRateEj,
+      capacityUtilizationRateTau,
+      capacityUtilizationRateStepOne,
+      capacityUtilizationRateStepTwo,
+      capacityStatusEj,
+      capacityStatusTau,
+      capacityStatusStepOne,
+      capacityStatusStepTwo,
+      patientInputTotalPerCycle,
+      patientInputPerCycleEj,
+      patientInputPerCycleTau,
+      patientInputPerCycleStepOne,
+      patientInputPerCycleStepTwo,
+      patientInputPerCycleMuu,
+      patientReReferralsPerMonthTau,
+      patientReReferralsPerMonthTauToMuu,
+      patientReReferralsPerMonthStepOne,
+      patientReReferralsPerMonthStepTwo,
+      patientReReferralsPerMonthStepOneToStepTwo,
+      patientReReferralsPerMonthStepOneToMuu,
+      patientReReferralsPerMonthStepTwoToMuu,
+      patientFlowPerMonthTauToQueue,
+      patientFlowPerMonthStepOneToQueue,
+      patientFlowPerMonthStepTwoToQueue,
+      patientFlowPerMonthMuuToQueue,
     };
 
     // Return the final simulation product array
