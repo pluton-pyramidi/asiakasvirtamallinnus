@@ -127,9 +127,9 @@ export const calculateSimulationBalance = createAsyncThunk(
     }
 
     // Re-referral rates from TAU
-    const patientReReferralsPerMonthTau = (patientInputPerCycleTau * insufficencyRateTau) / cycleDuration;
-    const patientReReferralsPerMonthTauToMuu = patientReReferralsPerMonthTau * state.tau.tauToMuuRate;
-    const patientFlowPerMonthTauToQueue = patientReReferralsPerMonthTau * tauToQueueRate;
+    const patientReReferralsPerMonthTau = Math.round((patientInputPerCycleTau * insufficencyRateTau) / cycleDuration);
+    const patientReReferralsPerMonthTauToMuu = Math.round(patientReReferralsPerMonthTau * state.tau.tauToMuuRate);
+    const patientFlowPerMonthTauToQueue = Math.round(patientReReferralsPerMonthTau * tauToQueueRate);
 
     // Patient input to step one per cycle
     // Input based on patient flow from Ensijäsennys, and two referral rates: 1) to stepped care, and 2) to step one
@@ -144,11 +144,16 @@ export const calculateSimulationBalance = createAsyncThunk(
     }
 
     // Re-referral rates from step one
-    const patientReReferralsPerMonthStepOne = (patientInputPerCycleStepOne * insufficencyRateStepOne) / cycleDuration;
-    const patientReReferralsPerMonthStepOneToStepTwo =
-      patientReReferralsPerMonthStepOne * state.stepOne.stepOneToStepTwoRate;
-    const patientReReferralsPerMonthStepOneToMuu = patientReReferralsPerMonthStepOne * state.stepOne.stepOneToMuuRate;
-    const patientFlowPerMonthStepOneToQueue = patientReReferralsPerMonthStepOne * stepOneToQueueRate;
+    const patientReReferralsPerMonthStepOne = Math.round(
+      (patientInputPerCycleStepOne * insufficencyRateStepOne) / cycleDuration
+    );
+    const patientReReferralsPerMonthStepOneToStepTwo = Math.round(
+      patientReReferralsPerMonthStepOne * state.stepOne.stepOneToStepTwoRate
+    );
+    const patientReReferralsPerMonthStepOneToMuu = Math.round(
+      patientReReferralsPerMonthStepOne * state.stepOne.stepOneToMuuRate
+    );
+    const patientFlowPerMonthStepOneToQueue = Math.round(patientReReferralsPerMonthStepOne * stepOneToQueueRate);
 
     // Patient input to step two per cycle
     // Based on patient input, two referral rates and the re-referral rate from step one to step two
@@ -164,9 +169,13 @@ export const calculateSimulationBalance = createAsyncThunk(
     }
 
     // Re-referral rates from step two
-    const patientReReferralsPerMonthStepTwo = (patientInputPerCycleStepTwo * insufficencyRateStepTwo) / cycleDuration;
-    const patientReReferralsPerMonthStepTwoToMuu = patientReReferralsPerMonthStepTwo * state.stepTwo.stepTwoToMuuRate;
-    const patientFlowPerMonthStepTwoToQueue = patientReReferralsPerMonthStepTwo * stepTwoToQueueRate;
+    const patientReReferralsPerMonthStepTwo = Math.round(
+      (patientInputPerCycleStepTwo * insufficencyRateStepTwo) / cycleDuration
+    );
+    const patientReReferralsPerMonthStepTwoToMuu = Math.round(
+      patientReReferralsPerMonthStepTwo * state.stepTwo.stepTwoToMuuRate
+    );
+    const patientFlowPerMonthStepTwoToQueue = Math.round(patientReReferralsPerMonthStepTwo * stepTwoToQueueRate);
 
     // Patient input to Muu
     // Based on the patient input to Ensijäsennys, the referral rate to Muu, and re-referrals from the other treatments
@@ -178,7 +187,7 @@ export const calculateSimulationBalance = createAsyncThunk(
         cycleDuration;
 
     // Patient flow from Muu to queue
-    const patientFlowPerMonthMuuToQueue = (patientInputPerCycleMuu * insufficencyRateMuu) / cycleDuration;
+    const patientFlowPerMonthMuuToQueue = Math.round((patientInputPerCycleMuu * insufficencyRateMuu) / cycleDuration);
 
     // Capacity utilization rate for each treatment
     const capacityUtilizationRateEj = Math.round((patientInputPerCycleEj / maxCycleCapacityEj) * 100);
