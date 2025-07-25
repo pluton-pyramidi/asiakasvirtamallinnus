@@ -16,7 +16,7 @@ The model helps assess the current treatment backlog, resource situation and det
 
 ### How Patient Flow Modeling Can Be Used
 
-- To respond to difficult situations and communicate leadership decisions openly and transparently
+- To simulate response options to difficult treatment queue/backlog situations
 
 - For allocating resources effectively
 
