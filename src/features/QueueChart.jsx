@@ -44,7 +44,12 @@ export const QueueChart = () => {
   }
 
   return (
-    <Box ref={refCharts} sx={{ ...BoxSx, height: "400px" }} id="queue-chart-box" component="section">
+    <Box
+      ref={refCharts}
+      sx={{ ...BoxSx, height: "400px", minWidth: "300px", maxWidth: "1200px" }}
+      id="queue-chart-box"
+      component="section"
+    >
       {charts.map((c) =>
         showChart.includes(c.id) ? (
           <D3Chart
