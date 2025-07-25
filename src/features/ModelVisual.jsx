@@ -40,7 +40,7 @@ export const ModelVisual = () => {
   return (
     <Box
       ref={refProcessUnits}
-      sx={{ ...BoxSx, height: "400px", minWidth: "300px", maxWidth: "1200px" }}
+      sx={{ ...BoxSx, minHeight: "400px", maxHeight: "1000px", minWidth: "300px", maxWidth: "1200px" }}
       id="-processUnit-box"
       component="section"
     >
