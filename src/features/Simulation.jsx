@@ -28,10 +28,7 @@ export default function Simulation() {
       <Grid size={12} align="center">
         <QueueChart></QueueChart>
       </Grid>
-      <Grid size={6}>
-        <ResultsNumbers></ResultsNumbers>
-      </Grid>
-      <Grid size={6}>
+      <Grid size={12}>
         <ResultsNumbers2></ResultsNumbers2>
       </Grid>
     </Grid>
