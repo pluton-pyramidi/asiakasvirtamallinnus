@@ -15,7 +15,7 @@ export default function Parameters() {
   const currentView = useSelector((state) => state.view.currentView);
 
   return (
-    <Box sx={{ ...BoxSx, minHeight: "400px" }}>
+    <Box sx={{ ...BoxSx, minHeight: "450px" }}>
       <Typography>Oletukset ja parametrit</Typography>
       {currentView === "patientInput" && <SimulationParams></SimulationParams>}
       {currentView === "ensijasennys" && (
