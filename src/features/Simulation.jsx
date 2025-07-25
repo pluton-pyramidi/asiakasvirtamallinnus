@@ -25,7 +25,7 @@ export default function Simulation() {
       <Grid size={6}>
         <Parameters></Parameters>
       </Grid>
-      <Grid size={12}>
+      <Grid size={12} align="center">
         <QueueChart></QueueChart>
       </Grid>
       <Grid size={6}>
