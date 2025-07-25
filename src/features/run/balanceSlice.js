@@ -332,6 +332,39 @@ export const calculateSimulationBalance = createAsyncThunk(
       { name: "Capacity Status (Step Two):", value: capacityStatusStepTwo },
     ];
 
+    // Store all calculated values by treatment unit
+    const simulationValues = {
+      workingHoursDaily,
+      cycleDuration,
+      simulationTimeSpan,
+      treatmentDurationTau,
+      treatmentDurationStepOne,
+      treatmentDurationStepTwo,
+      treatmentHoursPerWeekEj,
+      treatmentHoursPerWeekTau,
+      treatmentHoursPerWeekStepOne,
+      treatmentHoursPerWeekStepTwo,
+      appointmentsPerWeekEj,
+      appointmentsPerWeekTau,
+      appointmentsPerWeekStepOne,
+      appointmentsPerWeekStepTwo,
+      maxWeeklyCapacityEj,
+      maxWeeklyCapacityTau,
+      maxWeeklyCapacityStepOne,
+      maxWeeklyCapacityStepTwo,
+      maxCycleCapacityEj,
+      maxCycleCapacityTau,
+      maxCycleCapacityStepOne,
+      maxCycleCapacityStepTwo,
+      insufficencyRateTau,
+      insufficencyRateStepOne,
+      insufficencyRateStepTwo,
+      insufficencyRateMuu,
+      tauToQueueRate,
+      stepOneToQueueRate,
+      stepTwoToQueueRate,
+    };
+
     // Return the final simulation product array
     // This array is used to render the simulation graph in the UI
     return {
@@ -339,6 +372,7 @@ export const calculateSimulationBalance = createAsyncThunk(
       resultsTable,
       balanceIn,
       balanceOut,
+      simulationValues,
     };
   }
 );
@@ -347,10 +381,11 @@ export const calculateSimulationBalance = createAsyncThunk(
 const balanceSlice = createSlice({
   name: "balance",
   initialState: {
-    value: [], // Initialize simulated queue array
+    queueArray: [], // Initialize simulated queue array
     resultsTable: [], // Initialize results table
     balanceIn: {}, // Init balance in arrays object
     balanceOut: {}, // Init balance out arrays object
+    simulationValues: {}, // Holds all values of the simulation
     status: "idle", // Tracks the status of the thunk (loading, idle, etc.)
   },
   reducers: {},
@@ -361,10 +396,11 @@ const balanceSlice = createSlice({
       })
       .addCase(calculateSimulationBalance.fulfilled, (state, action) => {
         state.status = "idle";
-        state.value = action.payload.simulatedQueueArray; // Store the simulated queue array
+        state.queueArray = action.payload.simulatedQueueArray; // Store the simulated queue array
         state.resultsTable = action.payload.resultsTable; // Store the results table
         state.balanceIn = action.payload.balanceIn; // Store the balance in arrays object
         state.balanceOut = action.payload.balanceOut; // Store the balance out arrays object
+        state.simulationValues = action.payload.simulationValues; // Store the simulation values
       })
       .addCase(calculateSimulationBalance.rejected, (state) => {
         state.status = "error";

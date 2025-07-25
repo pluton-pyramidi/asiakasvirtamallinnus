@@ -4,7 +4,7 @@ import { BoxSx } from "../utils/ComponentSx";
 import { useSelector } from "react-redux";
 
 export default function ResultsNumbers() {
-  const simulatedQueue = useSelector((state) => state.balance.value);
+  const simulatedQueue = useSelector((state) => state.balance.queueArray);
   const resultsTable = useSelector((state) => state.balance.resultsTable);
 
   return (
