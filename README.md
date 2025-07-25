@@ -1,108 +1,92 @@
-# ASIAKASVIRTAMALLINNUS
+# ASIAKASVIRTAMALLINNUS / PATIENT FLOW SIMULATION
 
 ## WORK-IN-PROGRESS
 
-This is the development repo of a mental healthcare station patient flow simulation web app.
+This is the development repo of a mental healthcare unit patient flow simulation web app.
+
+The app is built using React and Vite, React Redux for state management, with Material-UI and Base-UI components and d3.js for visualizations.
 
 Contact: alex.villa@hus.fi
 
 ## What is this simulation about?
 
-This simulation acts like a discrete event model to simulate patient dynamics through a healthcare station, modeling the flow of patients through a mental healthcare station over time. It estimates how many patients enter and leave the queue, how treatment resources (staff) are utilized, and ultimately predicts how the patient queue evolves month by month.
+This simulation is a discrete event model that simulates patient flow dynamics through a healthcare station over time.
 
-## Simulation model logic
+The model helps assess the current treatment backlog, resource situation and determine what kind of treatment pathways and resourcing are needed to address the queue. It provides valuable insights into process bottlenecks, under/over-utilized services, and queue growth or reduction, helping with capacity planning and policy decisions.
 
-### 1. Core Purpose
+### How Patient Flow Modeling Can Be Used
 
-Simulate and visualize:
+- To respond to difficult situations and communicate leadership decisions openly and transparently
 
-The change in patient queue size over time
+- For allocating resources effectively
 
-The load on each treatment unit
+- In planning for professional development needs
 
-The inflow and outflow of patients across different services
+- To optimize referral and care pathway practices
 
-### 2. Input Parameters
+### How the Model Works
 
-From the global Redux state:
+The user can use the default parameters or input their own values, which the model uses to calculate outcomes.
 
-Timeframe: Duration of the simulation in months
+The logic behind the model is based on the following principles:
 
-Cycle duration: Basic unit of simulation (e.g., treatment duration)
+There is a group of individuals seeking help, forming a queue for assessment and treatment.
 
-Working hours, appointment durations, efficiency, and labor allocation
+During initial assessment (also called "Ensijäsennys"), patients are referred either to standard treatment or to a stepped care model.
 
-Initial queue size and new patients per month
+After receiving care, patients may:
 
-Referral and re-referral rates between treatment steps
+- No longer need further treatment (treatment was sufficient),
 
-### 3. Treatment Steps and Patient Flow
+- Be referred to the next level of care (e.g., from guided self-help to short-term cognitive therapy), or
 
-Patients flow through the following treatment stages:
+- Be escalated directly to a higher level of care or external service (e.g., to specialized care).
 
-- Ensijäsennys (Initial assessment), which branches to:
+- Some patients return to the queue after completing treatment, seeking help again regardless of the completed treatment.
 
-  - Treatment-as-usual (TAU)
+### The Model Includes Four Main Parts:
 
-  - Stepped care, which branches to:
+#### Queue, initial assessment, and resourcing
 
-    - Step One
+In this section, the user inputs model parameters:
 
-    - Step Two
+- The current number of people waiting for treatment
 
-  - Muu (Other services)
+- The average number of new patients joining the queue each month
 
-Each treatment step has:
+- The percentages of patients directed to different care options (standard care, brief interventions, or external services like online therapy, specialized care, or social services)
 
-A capacity (patients it can handle)
+- The number of trained professionals available for each treatment and how much of their working time is allocated to providing care
 
-An insufficiency rate (patients needing further treatment)
+#### Impact of Resourcing:
 
-A re-referral rate (back to queue or to other treatments)
+This section auto-calculates results based on input. It shows how many patients are being referred to each treatment and whether the available resources match the demand.
 
-### 4. Simulation Logic (What Happens Each Cycle)
+- If more patients are being referred than can be treated, demand exceeds capacity.
 
-a. Capacity Calculations
-For each treatment step:
+- If on the other hand capacity meets or exceeds demand, all referred patients can enter treatment.
 
-Calculate how many patients can be treated based on staff, working hours, appointment lengths, and efficiency.
+- The tool also shows by how much the capacity is over- or under-utilized.
 
-Compare with demand (how many patients need the treatment).
+#### Underlying Assumptions:
 
-Determine capacity utilization and whether resources are sufficient.
+This section includes default values (but allows user editing) of assumptions such as:
 
-b. Patient Input Calculations
-Determine, per treatment cycle:
+- How many patients are expected to recover or need no further treatment
 
-How many patients enter each treatment
+- To which level treatment is escalated if the initial treatment is not sufficient
 
-How many get referred to another treatment (based on insufficiency and referral rates)
+- The average duration of each type of treatment (e.g., a single guided self-help case or short-term therapy session)
 
-How many return to the queue
+- How efficiently professionals can use their time for direct care
 
-c. Monthly Balance Calculations
-Track for each month:
+#### Simulation Output:
 
-Inflow: new patients + those returning from other treatments
+The model provides a simulation of the treatment queue over a time period (e.g. 12 months), in addition to numbers about the process dynamics:
 
-Outflow: patients entering treatment (i.e., leaving the queue)
+- The queue graph: if the graph is rising instead of falling, it means the backlog isn’t decreasing and more queue is accumulating
 
-d. Queue Size Update
-Calculate queue size monthly:
-
-### 5. Output
-
-Returned by the thunk:
-
-simulatedQueueArray: Queue size month-by-month
-
-resultsTable: Debugging information on capacities, utilization, inputs
-
-balanceIn: Patient inflows (joining/returning to the queue)
-
-balanceOut: Patient outflows (leaving the queue for treatment)
-
-This output is consumed by the UI to render simulation graphs and tables.
+- Resource constraints and bottlenecks (staff and appointment capacity and utilization rates)
 
 #### Developer notes:
 
