@@ -6,6 +6,7 @@ import PercentageInput from "../../components/PercentageInput";
 import { Box, Button } from "@mui/material";
 import { setStepOne } from "./stepOneSlice";
 import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
+import { SubmitButton } from "../../components/SubmitButton";
 
 // This feature renders the set of input fields and submit button for inputting/changing the StepOne labor variables in the StepOne state slice
 export default function StepOne() {
@@ -54,15 +55,7 @@ export default function StepOne() {
         value={input.laborPercentageStepOne}
         handleChange={(e) => handleInputChange("laborPercentageStepOne", Number(e.target.value))}
       />
-      <Button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: isModified ? "orange" : "gray",
-          color: "white",
-        }}
-      >
-        Submit
-      </Button>
+      <SubmitButton onClick={handleSubmit} isModified={isModified} />
     </Box>
   );
 }

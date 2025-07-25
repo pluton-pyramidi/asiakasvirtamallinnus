@@ -6,6 +6,7 @@ import PercentageInput from "../../components/PercentageInput";
 import { Box, Button } from "@mui/material";
 import { setEnsijasennys } from "./ensijasennysSlice";
 import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
+import { SubmitButton } from "../../components/SubmitButton";
 
 export default function Ensijasennys() {
   const ensijasennys = useSelector((state) => state.ensijasennys);
@@ -48,15 +49,7 @@ export default function Ensijasennys() {
         value={input.laborPercentageEnsijasennys}
         handleChange={(e) => handleInputChange("laborPercentageEnsijasennys", Number(e.target.value))}
       />
-      <Button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: isModified ? "orange" : "gray",
-          color: "white",
-        }}
-      >
-        Submit
-      </Button>
+      <SubmitButton onClick={handleSubmit} isModified={isModified} />
     </Box>
   );
 }

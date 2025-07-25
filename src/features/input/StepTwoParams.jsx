@@ -7,6 +7,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { setStepTwo } from "./stepTwoSlice";
 import { calculateInsufficencyRateStepTwo, calculateStepTwoToQueueRate } from "./stepTwoSlice";
 import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
+import { SubmitButton } from "../../components/SubmitButton";
 
 // This feature renders the set of input fields and submit button for inputting/changing the StepTwo parameter variables in the StepTwo state slice
 export default function StepTwoParams() {
@@ -66,15 +67,7 @@ export default function StepTwoParams() {
         value={input.laborEfficiencyStepTwo}
         handleChange={(e) => handleInputChange("laborEfficiencyStepTwo", Number(e.target.value))}
       />
-      <Button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: isModified ? "orange" : "gray",
-          color: "white",
-        }}
-      >
-        Submit
-      </Button>
+      <SubmitButton onClick={handleSubmit} isModified={isModified} />
     </Box>
   );
 }

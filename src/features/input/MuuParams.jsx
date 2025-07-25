@@ -6,6 +6,7 @@ import PercentageInput from "../../components/PercentageInput";
 import { Box, Button, Typography } from "@mui/material";
 import { setMuu, calculateInsufficencyRateMuu } from "./muuSlice";
 import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
+import { SubmitButton } from "../../components/SubmitButton";
 
 // This feature renders the set of input fields and submit button for inputting/changing the Muu parameter variables in the Muu state slice
 export default function MuuParams() {
@@ -47,15 +48,7 @@ export default function MuuParams() {
         handleChange={(e) => handleInputChange("sufficiencyRateMuu", Number(e.target.value))}
       />
       <Typography>Asiakas palaa suoraan takaisin jonoon per kuukausi: {Math.round(muuToQueueRate * 100)} %</Typography>
-      <Button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: isModified ? "orange" : "gray",
-          color: "white",
-        }}
-      >
-        Submit
-      </Button>
+      <SubmitButton onClick={handleSubmit} isModified={isModified} />
     </Box>
   );
 }

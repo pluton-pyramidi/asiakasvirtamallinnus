@@ -5,6 +5,7 @@ import NumberInput from "../../components/NumberInput";
 import { Box, Button } from "@mui/material";
 import { setPatientInput } from "./patientInputSlice";
 import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
+import { SubmitButton } from "../../components/SubmitButton";
 
 export default function PatientInput() {
   const patientInput = useSelector((state) => state.patientInput);
@@ -47,15 +48,7 @@ export default function PatientInput() {
         value={input.newPatientsPerMonth}
         handleChange={(e) => handleInputChange("newPatientsPerMonth", Number(e.target.value))}
       />
-      <Button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: isModified ? "orange" : "gray",
-          color: "white",
-        }}
-      >
-        Submit
-      </Button>
+      <SubmitButton onClick={handleSubmit} isModified={isModified} />
     </Box>
   );
 }

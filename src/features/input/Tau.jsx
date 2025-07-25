@@ -6,6 +6,7 @@ import PercentageInput from "../../components/PercentageInput";
 import { Box, Button } from "@mui/material";
 import { setTau } from "./tauSlice";
 import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
+import { SubmitButton } from "../../components/SubmitButton";
 
 // This feature renders the set of input fields and submit button for inputting/changing the TAU labor variables in the TAU state slice
 export default function Tau() {
@@ -49,15 +50,7 @@ export default function Tau() {
         value={input.laborPercentageTau}
         handleChange={(e) => handleInputChange("laborPercentageTau", Number(e.target.value))}
       />
-      <Button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: isModified ? "orange" : "gray",
-          color: "white",
-        }}
-      >
-        Submit
-      </Button>
+      <SubmitButton onClick={handleSubmit} isModified={isModified} />
     </Box>
   );
 }

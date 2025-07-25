@@ -7,6 +7,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { setStepTwo } from "./stepTwoSlice";
 import { calculateHoitoonohjausStepTwo } from "./stepOneSlice";
 import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
+import { SubmitButton } from "../../components/SubmitButton";
 
 // This feature renders the set of input fields and submit button for inputting/changing the StepTwo labor variables in the StepTwo state slice
 export default function StepTwo() {
@@ -52,15 +53,7 @@ export default function StepTwo() {
         value={input.laborPercentageStepTwo}
         handleChange={(e) => handleInputChange("laborPercentageStepTwo", Number(e.target.value))}
       />
-      <Button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: isModified ? "orange" : "gray",
-          color: "white",
-        }}
-      >
-        Submit
-      </Button>
+      <SubmitButton onClick={handleSubmit} isModified={isModified} />
     </Box>
   );
 }

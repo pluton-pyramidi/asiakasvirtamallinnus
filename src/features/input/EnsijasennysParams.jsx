@@ -6,6 +6,7 @@ import PercentageInput from "../../components/PercentageInput";
 import { Box, Button, Typography } from "@mui/material";
 import { setEnsijasennys } from "./ensijasennysSlice";
 import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
+import { SubmitButton } from "../../components/SubmitButton";
 
 // This feature renders the set of input fields and submit button for inputting/changing the Ensijäsennys parameter variables in the Ensijäsennys state slice
 export default function EnsijasennysParams() {
@@ -49,15 +50,7 @@ export default function EnsijasennysParams() {
         value={input.laborEfficiencyEnsijasennys}
         handleChange={(e) => handleInputChange("laborEfficiencyEnsijasennys", Number(e.target.value))}
       />
-      <Button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: isModified ? "orange" : "gray",
-          color: "white",
-        }}
-      >
-        Submit
-      </Button>
+      <SubmitButton onClick={handleSubmit} isModified={isModified} />
     </Box>
   );
 }

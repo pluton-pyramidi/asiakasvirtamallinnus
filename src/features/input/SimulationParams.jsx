@@ -5,6 +5,7 @@ import NumberInput from "../../components/NumberInput";
 import { Box, Button, Typography } from "@mui/material";
 import { setSimulationParams } from "./simulationParamsSlice";
 import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
+import { SubmitButton } from "../../components/SubmitButton";
 
 // This feature renders the set of input fields and submit button for inputting/changing the Ensijäsennys parameter variables in the Ensijäsennys state slice
 export default function SimulationParams() {
@@ -74,15 +75,7 @@ export default function SimulationParams() {
         handleChange={(e) => handleInputChange("treatmentDurationStepTwo", Number(e.target.value))}
       />
 
-      <Button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: isModified ? "orange" : "gray",
-          color: "white",
-        }}
-      >
-        Submit
-      </Button>
+      <SubmitButton onClick={handleSubmit} isModified={isModified} />
     </Box>
   );
 }

@@ -15,7 +15,7 @@ export default function InputBlock() {
   const currentView = useSelector((state) => state.view.currentView);
 
   return (
-    <Box sx={BoxSx}>
+    <Box sx={{ ...BoxSx, minHeight: "400px" }}>
       <Typography>Ohjeet tähän</Typography>
       <Box>
         {currentView === "patientInput" && (

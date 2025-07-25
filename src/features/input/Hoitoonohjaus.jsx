@@ -5,6 +5,7 @@ import PercentageInput from "../../components/PercentageInput";
 import { Box, Button, Typography } from "@mui/material";
 import { calculateHoitoonohjausMuu, setHoitoonohjaus } from "./hoitoonohjausSlice";
 import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
+import { SubmitButton } from "../../components/SubmitButton";
 
 export default function Hoitoonohjaus() {
   const hoitoonohjaus = useSelector((state) => state.hoitoonohjaus);
@@ -69,15 +70,7 @@ export default function Hoitoonohjaus() {
         Muu: {""}
         {Math.round(hoitoonohjausMuu * 100)} %
       </Typography>
-      <Button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: isModified ? "orange" : "gray",
-          color: "white",
-        }}
-      >
-        Submit
-      </Button>
+      <SubmitButton onClick={handleSubmit} isModified={isModified} />
     </Box>
   );
 }

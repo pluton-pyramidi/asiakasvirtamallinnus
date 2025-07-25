@@ -7,6 +7,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { setStepOne } from "./stepOneSlice";
 import { calculateInsufficencyRateStepOne, calculateStepOneToQueueRate } from "./stepOneSlice";
 import { handleSubmitAndRun } from "../../utils/handleSubmitAndRun";
+import { SubmitButton } from "../../components/SubmitButton";
 
 // This feature renders the set of input fields and submit button for inputting/changing the StepOne parameter variables in the StepOne state slice
 export default function StepOneParams() {
@@ -87,15 +88,7 @@ export default function StepOneParams() {
         value={input.laborEfficiencyStepOne}
         handleChange={(e) => handleInputChange("laborEfficiencyStepOne", Number(e.target.value))}
       />
-      <Button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: isModified ? "orange" : "gray",
-          color: "white",
-        }}
-      >
-        Submit
-      </Button>
+      <SubmitButton onClick={handleSubmit} isModified={isModified} />
     </Box>
   );
 }
